@@ -537,9 +537,10 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 <!-- ===== SCREEN: SESSION ===== -->
 <div id="screen-session" class="screen">
   <div class="sess-hdr">
-    <button id="pause-btn" class="pause-btn" onclick="togglePause()">⏸</button>
+    <button class="pause-btn" onclick="exitSession()" title="Back to topics">‹</button>
     <div class="sess-hdr-title" id="sess-hdr-title">Session</div>
     <div class="sess-type-badge stb-factual" id="sess-type-badge">Factual</div>
+    <button id="pause-btn" class="pause-btn" onclick="togglePause()" title="Pause">⏸</button>
   </div>
   <div class="phase-bar" id="phase-bar">
     <div class="ph-item ph-active" id="ph1">
@@ -1361,9 +1362,19 @@ Return exactly this JSON:
       messages:[{role:'user',content:prompt}]})
   });
   const d=await resp.json();
+  // Check for API errors (wrong key, rate limit, etc.)
+  if(d.error){throw new Error('API error: '+d.error.message);}
   let text=d.content?.[0]?.text||'{}';
   text=text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
-  return JSON.parse(text);
+  // Find the JSON object even if Claude added text around it
+  const jsonStart=text.indexOf('{');
+  const jsonEnd=text.lastIndexOf('}');
+  if(jsonStart>=0&&jsonEnd>jsonStart)text=text.substring(jsonStart,jsonEnd+1);
+  const parsed=JSON.parse(text);
+  if(!parsed.passage||!parsed.questions){
+    throw new Error('Incomplete session data — please try again');
+  }
+  return parsed;
 }
 
 // ===== WIKIPEDIA IMAGE FETCHING =====
@@ -1757,6 +1768,19 @@ function startTimer(){S.timer=0;clearInterval(S.timerInterval);S.timerInterval=s
 function stopTimer(){clearInterval(S.timerInterval);}
 function fmtTime(s){const m=Math.floor(s/60),sec=s%60;return`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
 function updateSendMeta(){const q=S.answers.filter(a=>a&&!a.isEmpty).length;document.getElementById('send-meta').textContent=`Answered ${q} · ${fmtTime(S.timer)}`;}
+
+function exitSession(){
+  showModal(
+    'Exit session?',
+    'Your answers will be lost. Are you sure you want to go back to topics?',
+    ()=>{
+      stopTimer();
+      S.phase=0;
+      S.sessionData=null;
+      goToTopics();
+    }
+  );
+}
 
 function togglePause(){
   S.paused=!S.paused;
