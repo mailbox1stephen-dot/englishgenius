@@ -3,24 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>EnglishGenius</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#F4F1EC}
+html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#F4F1EC;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 :root{
   --navy:#1E3A8A;--navydark:#152a68;--gold:#FCD34D;--goldark:#f0c030;
   --bg:#F4F1EC;--white:#fff;--text:#1a1a2e;--muted:#6b7280;
   --border:#e5e7eb;--green:#22C55E;--amber:#F59E0B;--red:#EF4444;
   --blue:#3B82F6;--purple:#8B5CF6;--teal:#14B8A6;--coral:#F97316;
 }
-.screen{display:none;height:100vh;overflow-y:auto;background:var(--bg);flex-direction:column}
+.screen{display:none;height:100vh;flex-direction:column;background:var(--bg);overflow:hidden}
 .screen.active{display:flex}
 
 /* ===== NAV HEADER ===== */
-.nav-hdr{background:var(--navy);color:#fff;padding:0 16px;height:52px;display:flex;align-items:center;gap:10px;flex-shrink:0;position:sticky;top:0;z-index:10}
+.nav-hdr{background:var(--navy);color:#fff;padding:0 14px;height:44px;display:flex;align-items:center;gap:10px;flex-shrink:0;position:sticky;top:0;z-index:10}
 .nav-back{background:none;border:none;color:rgba(255,255,255,.7);font-size:24px;cursor:pointer;padding:0 4px;line-height:1;font-family:'Nunito',sans-serif}
-.nav-title{flex:1;font-size:16px;font-weight:800;color:#fff}
+.nav-title{flex:1;font-size:14px;font-weight:800;color:#fff}
 .nav-sub{font-size:11px;color:rgba(255,255,255,.6)}
 .nav-right{display:flex;align-items:center;gap:8px}
 
@@ -43,9 +45,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .divider span{background:var(--white);padding:0 10px;position:relative}
 
 /* ===== PROFILE ===== */
-#screen-profile{padding:24px;align-items:center}
-.profile-logo{text-align:center;margin-bottom:24px}
-.profile-logo h1{font-size:32px;font-weight:900;color:var(--navy)}
+#screen-profile{padding:24px 20px 32px;align-items:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.profile-logo{text-align:center;margin-bottom:20px}
+.profile-logo h1{font-size:30px;font-weight:900;color:var(--navy)}
 .profile-logo h1 span{color:var(--gold)}
 .profile-logo p{font-size:13px;color:var(--muted);margin-top:4px}
 .profile-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:420px;margin-bottom:14px}
@@ -66,44 +68,50 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .icon-grid{display:flex;gap:6px;flex-wrap:wrap}
 .icon-opt{font-size:24px;padding:6px;text-align:center;cursor:pointer;border-radius:8px;border:1.5px solid transparent;transition:all .1s}
 .icon-opt:hover,.icon-opt.selected{border-color:var(--navy);background:#f0f4ff}
+.p-topic-tag{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;display:inline-block;margin-top:8px}
+.alex .p-topic-tag{background:#DBEAFE;color:#1D4ED8}
+.est .p-topic-tag{background:#EDE9FE;color:#5B21B6}
+.p-avatar-wrap{width:60px;height:60px;border-radius:16px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.alex .p-avatar-wrap{background:#EFF6FF}
+.est .p-avatar-wrap{background:#F5F3FF}
 .parent-btn{width:100%;max-width:420px;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);font-family:'Nunito',sans-serif}
 
 /* ===== TOPICS ===== */
-#screen-topics{overflow:hidden;display:flex;flex-direction:column}
+#screen-topics{overflow:hidden;flex-direction:column}
 .topics-tabs{display:flex;background:var(--white);border-bottom:1.5px solid var(--border);flex-shrink:0}
 .ttab{flex:1;padding:13px 8px;text-align:center;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all .15s}
 .ttab.active{color:var(--navy);border-color:var(--navy)}
-.topics-scroll{flex:1;overflow-y:auto;padding:16px}
+.topics-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}
 .overall-prog{background:var(--white);border-radius:14px;padding:14px;margin-bottom:16px;border:1px solid var(--border)}
 .overall-prog h3{font-size:13px;font-weight:800;color:var(--text);margin-bottom:8px}
 .prog-bg{background:#f0f0f0;border-radius:20px;height:10px;overflow:hidden}
 .prog-fill{background:var(--navy);height:10px;border-radius:20px;transition:width .5s}
 .prog-lbl{font-size:11px;color:var(--muted);margin-top:4px;text-align:right;font-weight:600}
 .topics-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.topic-card{background:var(--white);border-radius:14px;padding:13px;border:1.5px solid var(--border);cursor:pointer;transition:all .15s}
+.topic-card{background:var(--white);border-radius:13px;padding:11px 10px;border:1.5px solid var(--border);cursor:pointer;transition:all .15s}
 .topic-card:active{transform:scale(.97)}
 .topic-card.locked{opacity:.5;cursor:default}
 .topic-card.current{border-color:var(--navy)}
 .topic-card.done{border-color:var(--green)}
 .topic-card.test-ready{border-color:var(--amber)}
 .tc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
-.tc-icon{font-size:24px}
-.tc-badge{font-size:9px;font-weight:800;padding:3px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em}
+.tc-icon{font-size:20px}
+.tc-badge{font-size:8px;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em}
 .badge-locked{background:#f0f0f0;color:#999}
 .badge-active{background:#EFF6FF;color:#1D4ED8}
 .badge-test{background:#FEF9C3;color:#854D0E}
 .badge-done{background:#F0FDF4;color:#166534}
 .badge-ready{background:#FEF3C7;color:#92400E}
 .tc-month{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
-.tc-title{font-size:13px;font-weight:800;color:var(--text);line-height:1.3}
-.session-dots{display:flex;gap:3px;margin-top:10px}
-.sdot{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:800;flex-shrink:0}
+.tc-title{font-size:12px;font-weight:800;color:var(--text);line-height:1.3}
+.session-dots{display:flex;gap:3px;margin-top:8px}
+.sdot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:6px;font-weight:800;flex-shrink:0}
 .sdot.done{background:var(--green);border-color:var(--green);color:#fff}
 .sdot.next{background:var(--navy);border-color:var(--navy);color:#fff}
 .sdot.empty{background:#f0f0f0;color:#ccc}
 .sdot.test{background:var(--amber);border-color:var(--amber);color:#fff}
-.sdot-labels{display:flex;gap:3px;margin-top:2px}
-.sdot-lbl{width:15px;text-align:center;font-size:6px;color:var(--muted);font-weight:700}
+.sdot-labels{display:flex;gap:3px;margin-top:3px}
+.sdot-lbl{width:14px;text-align:center;font-size:6px;color:var(--muted);font-weight:700}
 
 /* Journey tab */
 .journey-hero{background:var(--navy);border-radius:14px;padding:20px;color:var(--white);margin-bottom:20px;text-align:center}
@@ -125,9 +133,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .tl-sess{font-size:9px;padding:2px 8px;border-radius:20px;font-weight:700;border:1px solid}
 
 /* ===== SESSION ===== */
-#screen-session{overflow:hidden;display:flex;flex-direction:column;height:100vh}
-.sess-hdr{background:var(--navy);padding:0 14px;height:48px;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.sess-hdr-title{flex:1;color:var(--white);font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#screen-session{overflow:hidden;flex-direction:column}
+.sess-hdr{background:var(--navy);padding:0 13px;height:44px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.sess-hdr-title{flex:1;color:var(--white);font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sess-type-badge{font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
 .stb-factual{background:#BFDBFE;color:#1e40af}
 .stb-fiction{background:#DDD6FE;color:#4C1D95}
@@ -137,9 +145,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .stb-test{background:#E5E7EB;color:#374151}
 .pause-btn{background:none;border:none;color:rgba(255,255,255,.8);font-size:22px;cursor:pointer;padding:2px;line-height:1;flex-shrink:0}
 
-.phase-bar{background:var(--white);border-bottom:1px solid var(--border);padding:7px 14px;display:flex;align-items:center;gap:6px;flex-shrink:0}
-.ph-item{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700}
-.ph-num{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.phase-bar{background:var(--white);border-bottom:1px solid var(--border);padding:6px 13px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.ph-item{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700}
+.ph-num{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:800}
 .ph-active .ph-num{background:var(--navy);color:var(--white)}
 .ph-done .ph-num{background:var(--green);color:var(--white)}
 .ph-idle .ph-num{background:#f0f0f0;color:#aaa}
@@ -148,24 +156,27 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .ph-idle .ph-lbl{color:#aaa}
 .ph-sep{color:var(--border);font-size:14px}
 
-.prog-strip{padding:7px 14px;background:var(--white);border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:3px}
-.pq{flex:1;height:18px;border-radius:4px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#ccc;transition:background .2s}
+.prog-strip{padding:6px 13px;background:var(--white);border-bottom:1px solid var(--border);flex-shrink:0;display:flex;gap:3px}
+.pq{flex:1;height:16px;border-radius:3px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#ccc;transition:background .2s}
 .pq.answered{background:var(--green);color:var(--white)}
 .pq.current{background:var(--amber);color:var(--white)}
 
 .correction-banner{background:#FEF3C7;border-bottom:1px solid #FDE68A;padding:8px 14px;font-size:11px;font-weight:700;color:#78350F;flex-shrink:0;display:flex;align-items:center;gap:6px}
 
-.sess-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.sess-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;display:flex;flex-direction:column;gap:10px}
 
 /* Phase 1 */
 .reading-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .passage-wrap{background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden;position:relative}
-.passage-txt{padding:14px;font-size:14px;line-height:1.85;color:var(--text);position:relative;z-index:1;pointer-events:none;user-select:none;-webkit-user-select:none}
+.passage-txt{padding:13px;font-size:13.5px;line-height:1.8;color:var(--text);position:relative;z-index:1;pointer-events:none;user-select:none;-webkit-user-select:none}
 #annotation-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:2;cursor:crosshair;touch-action:none;overscroll-behavior:none}
 .anno-tools{display:flex;gap:6px;padding:10px 14px;background:var(--white);border-radius:0 0 14px 14px;border-top:1px solid var(--border);align-items:center}
 .anno-tool{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .1s}
 .anno-tool.active{border-color:var(--navy);box-shadow:0 0 0 2px rgba(30,58,138,.2)}
-.anno-clear{margin-left:auto;font-size:10px;font-weight:700;background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px 10px;cursor:pointer;color:var(--muted);font-family:'Nunito',sans-serif}
+.anno-btn{font-size:10px;font-weight:700;background:none;border:1.5px solid var(--border);border-radius:8px;padding:4px 10px;cursor:pointer;color:var(--muted);font-family:'Nunito',sans-serif;-webkit-tap-highlight-color:transparent}
+.anno-btn:active{background:var(--bg)}
+.canvas-top-btns{position:absolute;top:6px;right:6px;display:flex;gap:4px;z-index:3}
+.canvas-action-btn{background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:7px;padding:4px 9px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--text);-webkit-tap-highlight-color:transparent;backdrop-filter:blur(4px)}
 .done-reading-btn{background:var(--navy);color:var(--gold);border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
 
 /* Phase 2 */
@@ -173,7 +184,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .peek-bar-lbl{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;font-weight:700}
 .peek-body{background:#fffef8;border-radius:0 0 10px 10px;border:1.5px solid var(--border);border-top:none;padding:10px 13px;font-size:12px;color:var(--text);line-height:1.75;display:none}
 .q-lbl{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.q-text{font-size:16px;font-weight:800;color:var(--text);line-height:1.4;margin-top:4px}
+.q-text{font-size:15px;font-weight:800;color:var(--text);line-height:1.4;margin-top:4px}
 .answer-wrap{border:2.5px solid var(--gold);border-radius:14px;background:var(--white);overflow:hidden;position:relative}
 #answer-canvas{display:block;width:100%;touch-action:none;overscroll-behavior:none;cursor:crosshair}
 .clear-ans-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.07);border:none;border-radius:6px;padding:4px 9px;font-size:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text)}
@@ -213,42 +224,109 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .home-btn{background:var(--navy);color:var(--gold);border:none;border-radius:14px;padding:15px 36px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
 
 /* ===== PARENT PIN ===== */
-#screen-parent-pin{align-items:center;justify-content:center;padding:24px}
-.pin-card{background:var(--white);border-radius:18px;padding:30px;width:100%;max-width:320px;text-align:center;border:1.5px solid var(--border)}
-.pin-title{font-size:20px;font-weight:900;color:var(--navy);margin-bottom:6px}
+#screen-parent-pin{flex-direction:column}
+.pin-card{background:var(--white);border-radius:18px;padding:24px 20px;width:100%;max-width:300px;text-align:center;border:1.5px solid var(--border)}
+.pin-title{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:5px}
 .pin-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
 .pin-dots{display:flex;gap:12px;justify-content:center;margin-bottom:24px}
 .pin-dot{width:18px;height:18px;border-radius:50%;background:#f0f0f0;border:2px solid var(--border);transition:background .1s}
 .pin-dot.filled{background:var(--navy);border-color:var(--navy)}
 .pin-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.pin-key{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:15px;font-size:20px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--text)}
+.pin-key{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:18px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--text)}
 .pin-key:active{background:#f5f5f5}
 .pin-error{font-size:13px;color:var(--red);margin-top:10px;font-weight:700;min-height:20px}
 
 /* ===== PARENT DASH ===== */
-#screen-parent-dash{overflow:hidden;display:flex;flex-direction:column}
-.dash-tabs{display:flex;background:var(--white);border-bottom:1.5px solid var(--border);flex-shrink:0}
-.dtab{flex:1;padding:12px 8px;text-align:center;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;transition:all .15s}
-.dtab.active{color:var(--navy);border-color:var(--navy)}
-.dash-scroll{flex:1;overflow-y:auto;padding:16px}
-.dash-sec h3{font-size:13px;font-weight:800;color:var(--text);margin-bottom:10px}
-.dash-sec{margin-bottom:22px}
-.pending-card{background:var(--white);border-radius:14px;border:2px solid var(--amber);padding:14px;margin-bottom:8px;cursor:pointer;transition:opacity .15s}
+#screen-parent-dash{overflow:hidden;flex-direction:column}
+.dash-tabs{display:flex;background:var(--navy);border-bottom:none;flex-shrink:0}
+.dtab{flex:1;padding:12px 8px;text-align:center;font-size:12px;font-weight:800;color:rgba(255,255,255,.5);cursor:pointer;border-bottom:3px solid transparent;transition:all .15s}
+.dtab.active{color:var(--white);border-color:var(--gold)}
+.dash-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0}
+.dash-sec{margin-bottom:0;padding:14px 14px 0}
+.dash-sec h3{font-size:10px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.08em}
+.pending-card{background:var(--white);border-radius:12px;border:2px solid var(--amber);padding:11px 13px;margin-bottom:7px;cursor:pointer;transition:opacity .15s;display:flex;flex-direction:column;gap:3px}
 .pending-card:active{opacity:.85}
-.pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
-.pc-name{font-size:14px;font-weight:800;color:var(--text)}
-.pc-badge{font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;background:#FEF3C7;color:#78350F}
+.pc-top{display:flex;align-items:center;justify-content:space-between}
+.pc-name{font-size:13px;font-weight:800;color:var(--text)}
+.pc-badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;background:#FEF3C7;color:#78350F}
 .pc-meta{font-size:11px;color:var(--muted);font-weight:600}
-.no-pending{background:var(--white);border-radius:12px;padding:20px;text-align:center;border:1px solid var(--border)}
+.no-pending{background:var(--white);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--border)}
 .no-pending p{font-size:13px;color:var(--muted);font-weight:600}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px}
-.stat-card{background:var(--white);border-radius:14px;padding:14px;border:1px solid var(--border);text-align:center}
-.stat-num{font-size:28px;font-weight:900;color:var(--navy)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0}
+.stat-card{background:var(--white);border-radius:12px;padding:12px;border:1px solid var(--border);text-align:center}
+.stat-num{font-size:24px;font-weight:900;color:var(--navy)}
 .stat-lbl{font-size:11px;color:var(--muted);margin-top:2px;font-weight:600}
 .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.action-btn-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:14px;text-align:center;cursor:pointer;font-family:'Nunito',sans-serif;transition:border-color .15s}
+.action-btn-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px;text-align:center;cursor:pointer;font-family:'Nunito',sans-serif;transition:border-color .15s}
 .action-btn-card:hover{border-color:var(--navy)}
-.action-icon{font-size:24px;margin-bottom:5px}
+.action-icon{font-size:22px;margin-bottom:4px}
+.action-lbl{font-size:12px;font-weight:800;color:var(--text)}
+
+/* Hero banner */
+.hero-banner{border-radius:0;padding:16px 14px 14px;color:var(--white);margin-bottom:0}
+.hero-banner-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.hero-av-box{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.hero-name{font-size:18px;font-weight:900;color:var(--white)}
+.hero-meta{font-size:11px;color:rgba(255,255,255,.8);margin-top:2px;font-weight:600}
+.hero-prog-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hero-prog-label{font-size:10px;font-weight:800;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em}
+.hero-prog-pct{font-size:11px;font-weight:800;color:var(--white)}
+.hero-prog-bg{background:rgba(255,255,255,.25);border-radius:20px;height:7px;overflow:hidden}
+.hero-prog-fill{height:7px;background:var(--white);border-radius:20px;transition:width .5s}
+
+/* Stats row (3 col) */
+.stats-3{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--border);background:var(--white)}
+.stat-3-item{padding:12px 8px;text-align:center;border-right:1px solid var(--border)}
+.stat-3-item:last-child{border-right:none}
+.stat-3-num{font-size:20px;font-weight:900;color:var(--text)}
+.stat-3-lbl{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+
+/* Locked session banner */
+.locked-banner{background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:0}
+.locked-banner-text{font-size:12px;font-weight:700;color:#166534;display:flex;align-items:center;gap:6px}
+.locked-banner-remove{background:none;border:1px solid #86EFAC;border-radius:6px;padding:3px 9px;font-size:10px;font-weight:800;cursor:pointer;color:#166534;font-family:'Nunito',sans-serif}
+
+/* Topic list - clean MathGenius style */
+.topic-list-clean{border-top:1px solid var(--border);background:var(--white)}
+.tl-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:10px;cursor:pointer}
+.tl-row:last-child{border-bottom:none}
+.tl-num{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);width:52px;flex-shrink:0}
+.tl-name{flex:1;font-size:13px;font-weight:700;color:var(--text)}
+.tl-sess-dots{display:flex;gap:2px;margin-top:4px}
+.tl-sdot{width:11px;height:4px;border-radius:2px;background:#e5e7eb}
+.tl-sdot.tl-done{background:var(--green)}
+.tl-sdot.tl-next{background:var(--navy)}
+.tl-status{font-size:9px;font-weight:800;padding:3px 8px;border-radius:20px;flex-shrink:0}
+.tls-done{background:#F0FDF4;color:#166534}
+.tls-active{background:#EFF6FF;color:#1D4ED8}
+.tls-test{background:#FEF9C3;color:#854D0E}
+.tls-locked{background:#f0f0f0;color:#aaa}
+
+/* Calendar */
+.cal-wrap{background:var(--white);border-top:1px solid var(--border)}
+.cal-header{padding:12px 14px 6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:0 10px 12px}
+.cal-day-hdr{text-align:center;font-size:9px;font-weight:800;color:var(--muted);padding:4px 0;text-transform:uppercase}
+.cal-cell{min-height:32px;border-top:1px solid var(--border);padding:3px 0;display:flex;flex-direction:column;align-items:center;position:relative}
+.cal-num{font-size:9px;font-weight:700;color:var(--muted)}
+.cal-cell.cal-today .cal-num{color:var(--navy);font-weight:900}
+.cal-dot{width:6px;height:6px;border-radius:50%;margin-top:2px}
+.cal-cell.cal-alex .cal-dot{background:#3B82F6}
+.cal-cell.cal-est .cal-dot{background:#8B5CF6}
+.cal-cell.cal-both .cal-dot{background:var(--green)}
+
+/* Mistakes */
+.mistakes-wrap{background:var(--white);border-top:1px solid var(--border)}
+.mistake-row{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:8px}
+.mistake-row:last-child{border-bottom:none}
+.mistake-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.mistake-q{font-size:12px;font-weight:700;color:var(--text);line-height:1.4;flex:1}
+.mistake-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.mistakes-empty{padding:14px;text-align:center;font-size:12px;color:var(--muted);font-weight:600}
+
+/* Overview date header */
+.dash-date-hdr{padding:10px 14px 2px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.action-icon{font-size:22px;margin-bottom:4px}
 .action-lbl{font-size:12px;font-weight:800;color:var(--text)}
 .topic-list{display:flex;flex-direction:column;gap:6px}
 .tp-row{background:var(--white);border-radius:12px;padding:11px 13px;border:1px solid var(--border);display:flex;align-items:center;gap:10px}
@@ -259,14 +337,14 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .tp-badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em}
 
 /* ===== PARENT REVIEW ===== */
-#screen-parent-review{overflow:hidden;display:flex;flex-direction:column}
-.review-scroll{flex:1;overflow-y:auto}
-.review-info-bar{background:var(--white);padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+#screen-parent-review{overflow:hidden;flex-direction:column}
+.review-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.review-info-bar{background:var(--white);padding:10px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
 .ri-left{flex:1}
-.ri-name{font-size:14px;font-weight:800;color:var(--text)}
+.ri-name{font-size:13px;font-weight:800;color:var(--text)}
 .ri-meta{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
 .ri-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px}
-.apr-btn{background:#22C55E;color:var(--white);border:none;border-radius:10px;padding:10px 16px;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:5px;flex-shrink:0;transition:background .2s}
+.apr-btn{background:#22C55E;color:var(--white);border:none;border-radius:9px;padding:9px 14px;font-size:11px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:4px;flex-shrink:0;transition:background .2s}
 .apr-btn.approved{background:#166534}
 
 .sess-pills{padding:8px 14px;background:var(--white);border-bottom:1px solid var(--border);display:flex;gap:5px;overflow-x:auto;flex-shrink:0}
@@ -283,21 +361,21 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .pt-ann-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted);font-weight:600}
 
 .review-q-hdr{padding:8px 14px 3px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg)}
-.review-q-row{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--white);display:flex;gap:9px;align-items:flex-start}
+.review-q-row{padding:9px 13px;border-bottom:1px solid var(--border);background:var(--white);display:flex;gap:8px;align-items:flex-start}
 .rq-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;margin-top:1px}
 .rqn-ok{background:#F0FDF4;color:#166534;border:1.5px solid #86EFAC}
 .rqn-wr{background:#FEF2F2;color:#991B1B;border:1.5px solid #FCA5A5}
 .rqn-pd{background:#EFF6FF;color:#1D4ED8;border:1.5px solid #93C5FD}
 .rq-main{flex:1;min-width:0}
 .rq-type{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
-.rq-text{font-size:12px;font-weight:800;color:var(--text);line-height:1.4;margin-bottom:7px}
+.rq-text{font-size:11px;font-weight:800;color:var(--text);line-height:1.4;margin-bottom:6px}
 .answers-2col{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px}
 .ans-child-box{border-left:3px solid var(--gold);border-radius:0 6px 6px 0;background:var(--white);padding:6px 9px;border-top:.5px solid #f0e8c0;border-bottom:.5px solid #f0e8c0;border-right:.5px solid #f0e8c0}
 .ans-box-lbl{font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;color:#B45309}
-.ans-child-text{font-size:11.5px;color:#1a1a1a;font-family:Georgia,serif;line-height:1.4;word-break:break-word}
+.ans-child-text{font-size:11px;color:#1a1a1a;font-family:Georgia,serif;line-height:1.4;word-break:break-word}
 .ans-ai-box{border-left:3px solid var(--blue);border-radius:0 6px 6px 0;background:#EFF6FF;padding:6px 9px;border-top:.5px solid #BFDBFE;border-bottom:.5px solid #BFDBFE;border-right:.5px solid #BFDBFE}
 .ans-ai-box .ans-box-lbl{color:#1D4ED8}
-.ans-ai-text{font-size:11px;color:#1e3a5f;line-height:1.4;word-break:break-word}
+.ans-ai-text{font-size:10.5px;color:#1e3a5f;line-height:1.4;word-break:break-word}
 .rq-ai-note{font-size:10px;color:var(--muted);font-style:italic;margin-top:3px}
 .rq-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
 .rq-chip{font-size:9px;font-weight:800;padding:3px 7px;border-radius:20px;white-space:nowrap}
@@ -325,8 +403,8 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .q10-ovb{font-size:11px;padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700}
 
 /* ===== SESSION BUILDER ===== */
-#screen-session-builder{overflow:hidden;display:flex;flex-direction:column}
-.sb-scroll{flex:1;overflow-y:auto;padding:16px}
+#screen-session-builder{overflow:hidden;flex-direction:column}
+.sb-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px}
 .sb-lbl{font-size:12px;font-weight:800;color:var(--text);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em}
 .sb-select{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:14px;font-family:'Nunito',sans-serif;outline:none;background:var(--white);color:var(--text);margin-bottom:16px}
 .sb-type-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
@@ -378,6 +456,8 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 /* ===== TOAST ===== */
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--white);padding:10px 22px;border-radius:24px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
+#sync-indicator{position:fixed;bottom:20px;right:14px;background:var(--navy);color:var(--white);font-size:10px;font-weight:800;padding:5px 11px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:998;white-space:nowrap}
+#sync-indicator.show{opacity:1}
 </style>
 </head>
 <body>
@@ -410,17 +490,23 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
   </div>
   <div class="profile-cards">
     <div class="profile-card alex" onclick="selectProfile('alexander')">
-      <div class="p-avatar" id="alex-avatar" onclick="event.stopPropagation();openIconPicker('alexander')">🦊</div>
+      <div class="p-avatar-wrap">
+        <div class="p-avatar" id="alex-avatar" onclick="event.stopPropagation();openIconPicker('alexander')">🦊</div>
+      </div>
       <div class="p-name">Alexander</div>
       <div class="p-grade">Age 9 · Year 3</div>
       <div class="p-streak" id="alex-streak">🔥 0 day streak</div>
+      <div class="p-topic-tag" id="alex-topic">Science & Experiments</div>
       <button class="change-icon-btn" onclick="event.stopPropagation();openIconPicker('alexander')">✏️ Change icon</button>
     </div>
     <div class="profile-card est" onclick="selectProfile('estelle')">
-      <div class="p-avatar" id="est-avatar" onclick="event.stopPropagation();openIconPicker('estelle')">🦋</div>
+      <div class="p-avatar-wrap">
+        <div class="p-avatar" id="est-avatar" onclick="event.stopPropagation();openIconPicker('estelle')">🦋</div>
+      </div>
       <div class="p-name">Estelle</div>
       <div class="p-grade">Age 11 · Year 6</div>
       <div class="p-streak" id="est-streak">🔥 0 day streak</div>
+      <div class="p-topic-tag" id="est-topic">Science & Discovery</div>
       <button class="change-icon-btn" onclick="event.stopPropagation();openIconPicker('estelle')">✏️ Change icon</button>
     </div>
   </div>
@@ -435,10 +521,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     <button class="nav-back" onclick="showScreen('screen-profile')">‹</button>
     <div>
       <div class="nav-title" id="topics-profile-name">Alexander</div>
-      <div class="nav-sub">Choose a topic</div>
     </div>
     <div class="nav-right">
-      <div id="topics-avatar" style="font-size:22px">🦊</div>
+      <div id="topics-avatar" style="font-size:22px;line-height:1">🦊</div>
     </div>
   </div>
   <div class="topics-tabs">
@@ -452,7 +537,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 <!-- ===== SCREEN: SESSION ===== -->
 <div id="screen-session" class="screen">
   <div class="sess-hdr">
-    <button class="pause-btn" onclick="togglePause()">⏸</button>
+    <button id="pause-btn" class="pause-btn" onclick="togglePause()">⏸</button>
     <div class="sess-hdr-title" id="sess-hdr-title">Session</div>
     <div class="sess-type-badge stb-factual" id="sess-type-badge">Factual</div>
   </div>
@@ -494,15 +579,19 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 
 <!-- ===== SCREEN: PARENT PIN ===== -->
 <div id="screen-parent-pin" class="screen">
-  <div style="position:absolute;top:20px;left:16px">
-    <button style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted)" onclick="showScreen('screen-profile')">‹</button>
+  <div class="nav-hdr">
+    <button class="nav-back" onclick="showScreen('screen-profile')">‹</button>
+    <div class="nav-title">Parent access</div>
   </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:24px">
   <div class="pin-card">
-    <div class="pin-title">🔒 Parent access</div>
-    <div class="pin-sub">Enter your 4-digit PIN</div>
+    <div class="pin-title">🔒 Enter PIN</div>
+    <div class="pin-sub">Enter your 4-digit parent PIN</div>
     <div class="pin-dots" id="pin-dots">
-      <div class="pin-dot"></div><div class="pin-dot"></div>
-      <div class="pin-dot"></div><div class="pin-dot"></div>
+      <div class="pin-dot" id="ppd0"></div>
+      <div class="pin-dot" id="ppd1"></div>
+      <div class="pin-dot" id="ppd2"></div>
+      <div class="pin-dot" id="ppd3"></div>
     </div>
     <div class="pin-keypad">
       <button class="pin-key" onclick="pinPress('1')">1</button>
@@ -520,6 +609,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     </div>
     <div class="pin-error" id="pin-error"></div>
   </div>
+  </div>
 </div>
 
 <!-- ===== SCREEN: PARENT DASH ===== -->
@@ -527,14 +617,16 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
   <div class="nav-hdr">
     <button class="nav-back" onclick="showScreen('screen-profile')">‹</button>
     <div class="nav-title">Parent Dashboard</div>
-    <button style="background:none;border:none;color:rgba(255,255,255,.7);font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif" onclick="showScreen('screen-cloud-settings')">☁️ Cloud</button>
+    <button id="dash-cloud-btn" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;padding:4px;line-height:1" onclick="showScreen('screen-cloud-settings')" title="Cloud Sync">☁️</button>
   </div>
   <div class="dash-tabs">
-    <div class="dtab active" onclick="switchDashTab(0)">Overview</div>
-    <div class="dtab" onclick="switchDashTab(1)">Alexander</div>
-    <div class="dtab" onclick="switchDashTab(2)">Estelle</div>
+    <div class="dtab active" id="pd-dtab-0" onclick="switchDashTab(0)">Overview</div>
+    <div class="dtab" id="pd-dtab-1" onclick="switchDashTab(1)">Alexander</div>
+    <div class="dtab" id="pd-dtab-2" onclick="switchDashTab(2)">Estelle</div>
   </div>
-  <div class="dash-scroll" id="dash-content"></div>
+  <div class="dash-scroll" id="pd-tab-overview"></div>
+  <div class="dash-scroll" id="pd-tab-alexander" style="display:none"></div>
+  <div class="dash-scroll" id="pd-tab-estelle" style="display:none"></div>
 </div>
 
 <!-- ===== SCREEN: PARENT REVIEW ===== -->
@@ -624,6 +716,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="sync-indicator">Synced ☁️</div>
 
 <script>
 /* =====================================================
@@ -633,56 +726,56 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 // ===== TOPIC DATA =====
 const TOPICS = {
   alexander:[
-    {id:'t1',month:'August',theme:'Amazing Animals',icon:'🐾',
-     sessions:{factual:'Big Cats & Predators',fiction:'Jungle Adventure Story',deeper:'Rainforest Ecosystems',nordic:'Emil-Style Farm Story',write:'Animal Superpowers Review'}},
-    {id:'t2',month:'September',theme:'Oceans & Adventures',icon:'🌊',
-     sessions:{factual:'Coral Reefs & Sea Life',fiction:'Treasure Island Story',deeper:'Deep Sea Mysteries',nordic:'Nordic Pirate Adventure',write:'Ocean Pollution Review'}},
-    {id:'t3',month:'October',theme:'Space & Sci-Fi',icon:'🚀',
-     sessions:{factual:'The Solar System',fiction:'Space Explorer Story',deeper:'Black Holes & Stars',nordic:'Nordic Space Tale',write:'Future Space Travel'}},
-    {id:'t4',month:'November',theme:'Weather & Survival',icon:'⛈️',
-     sessions:{factual:'How Storms Form',fiction:'Survival Cabin Story',deeper:'Volcanoes & Earthquakes',nordic:'Ronja Forest Survival',write:'Extreme Weather Review'}},
-    {id:'t5',month:'December',theme:'Winter & Nordic Stories',icon:'❄️',
-     sessions:{factual:'Arctic Animals',fiction:'Tomten Winter Tale',deeper:'Snow & Ice Science',nordic:'Northern Lights Legend',write:'Winter Traditions Review'}},
-    {id:'t6',month:'January',theme:'The Human Body',icon:'🧠',
-     sessions:{factual:'How the Brain Works',fiction:'Memory Challenge Story',deeper:'Heart & Circulation',nordic:'Sports Competition Story',write:'Healthy Habits Review'}},
-    {id:'t7',month:'February',theme:'Inventions & Machines',icon:'⚙️',
-     sessions:{factual:'Cars & Transport',fiction:'Train Journey Story',deeper:'Flying Machines',nordic:'Curious Inventor Story',write:'Robot Technology Review'}},
-    {id:'t8',month:'March',theme:'Vikings & Ancient Worlds',icon:'⚔️',
-     sessions:{factual:'Who Were the Vikings?',fiction:'Viking Child Adventure',deeper:'Ancient Egypt',nordic:'Norse Mythology Tale',write:'Medieval Life Review'}},
-    {id:'t9',month:'April',theme:'Nature & Forests',icon:'🌿',
-     sessions:{factual:'Forest Ecosystems',fiction:'Ronja Forest Adventure',deeper:'Mountains & Rivers',nordic:'Swedish Nature Story',write:'Saving Nature Review'}},
-    {id:'t10',month:'May',theme:'Sports & Competition',icon:'🏆',
-     sessions:{factual:'Olympic History',fiction:'Sports Camp Story',deeper:'Mental Strength in Sports',nordic:'Swedish Champion Story',write:'Teamwork Review'}},
-    {id:'t11',month:'June',theme:'Science & Experiments',icon:'🔬',
+    {id:'t1',month:'June',theme:'Science & Experiments',icon:'🔬',
      sessions:{factual:'Magnets & Electricity',fiction:'Science Lab Story',deeper:'Simple Experiments',nordic:'Young Inventor Story',write:'Amazing Science Facts'}},
-    {id:'t12',month:'July',theme:'Mysteries & Adventures',icon:'🔍',
+    {id:'t2',month:'July',theme:'Mysteries & Adventures',icon:'🔍',
      sessions:{factual:'Dinosaur World',fiction:'Pirate Mystery Story',deeper:'Lost Cities',nordic:'Child Detective Story',write:'Great Adventure Review'}},
+    {id:'t3',month:'August',theme:'Amazing Animals',icon:'🐾',
+     sessions:{factual:'Big Cats & Predators',fiction:'Jungle Adventure Story',deeper:'Rainforest Ecosystems',nordic:'Emil-Style Farm Story',write:'Animal Superpowers Review'}},
+    {id:'t4',month:'September',theme:'Oceans & Adventures',icon:'🌊',
+     sessions:{factual:'Coral Reefs & Sea Life',fiction:'Treasure Island Story',deeper:'Deep Sea Mysteries',nordic:'Nordic Pirate Adventure',write:'Ocean Pollution Review'}},
+    {id:'t5',month:'October',theme:'Space & Sci-Fi',icon:'🚀',
+     sessions:{factual:'The Solar System',fiction:'Space Explorer Story',deeper:'Black Holes & Stars',nordic:'Nordic Space Tale',write:'Future Space Travel'}},
+    {id:'t6',month:'November',theme:'Weather & Survival',icon:'⛈️',
+     sessions:{factual:'How Storms Form',fiction:'Survival Cabin Story',deeper:'Volcanoes & Earthquakes',nordic:'Ronja Forest Survival',write:'Extreme Weather Review'}},
+    {id:'t7',month:'December',theme:'Winter & Nordic Stories',icon:'❄️',
+     sessions:{factual:'Arctic Animals',fiction:'Tomten Winter Tale',deeper:'Snow & Ice Science',nordic:'Northern Lights Legend',write:'Winter Traditions Review'}},
+    {id:'t8',month:'January',theme:'The Human Body',icon:'🧠',
+     sessions:{factual:'How the Brain Works',fiction:'Memory Challenge Story',deeper:'Heart & Circulation',nordic:'Sports Competition Story',write:'Healthy Habits Review'}},
+    {id:'t9',month:'February',theme:'Inventions & Machines',icon:'⚙️',
+     sessions:{factual:'Cars & Transport',fiction:'Train Journey Story',deeper:'Flying Machines',nordic:'Curious Inventor Story',write:'Robot Technology Review'}},
+    {id:'t10',month:'March',theme:'Vikings & Ancient Worlds',icon:'⚔️',
+     sessions:{factual:'Who Were the Vikings?',fiction:'Viking Child Adventure',deeper:'Ancient Egypt',nordic:'Norse Mythology Tale',write:'Medieval Life Review'}},
+    {id:'t11',month:'April',theme:'Nature & Forests',icon:'🌿',
+     sessions:{factual:'Forest Ecosystems',fiction:'Ronja Forest Adventure',deeper:'Mountains & Rivers',nordic:'Swedish Nature Story',write:'Saving Nature Review'}},
+    {id:'t12',month:'May',theme:'Sports & Competition',icon:'🏆',
+     sessions:{factual:'Olympic History',fiction:'Sports Camp Story',deeper:'Mental Strength in Sports',nordic:'Swedish Champion Story',write:'Teamwork Review'}},
   ],
   estelle:[
-    {id:'t1',month:'August',theme:'Human Nature & Adventure',icon:'🧗',
-     sessions:{factual:'Human Survival Science',fiction:'Survival Story',deeper:'Explorers & Expeditions',nordic:'Pippi-Inspired Independence',write:'Courage & Leadership Review'}},
-    {id:'t2',month:'September',theme:'Oceans & Discovery',icon:'🌊',
-     sessions:{factual:'Ocean Ecosystems',fiction:'Lost at Sea Story',deeper:'Deep Sea Mysteries',nordic:'Scandinavian Sea Tale',write:'Climate & Oceans Review'}},
-    {id:'t3',month:'October',theme:'Space & Future Worlds',icon:'🚀',
-     sessions:{factual:'Space Exploration',fiction:'Sci-Fi Adventure',deeper:'Mars Missions',nordic:'Nordic Space Tale',write:'Artificial Intelligence Review'}},
-    {id:'t4',month:'November',theme:'Extreme Weather & Survival',icon:'⛈️',
-     sessions:{factual:'Natural Disasters',fiction:'Storm Survival Story',deeper:'Volcanoes & Earthquakes',nordic:'Ronja Forest Survival',write:'Climate Challenges Review'}},
-    {id:'t5',month:'December',theme:'Winter & Nordic Culture',icon:'❄️',
-     sessions:{factual:'Arctic Life',fiction:'Tomten Winter Tale',deeper:'Nordic Traditions',nordic:'Northern Lights Myth',write:'Winter Around the World'}},
-    {id:'t6',month:'January',theme:'Human Body & Mind',icon:'🧠',
-     sessions:{factual:'The Brain & Memory',fiction:'Psychological Mystery',deeper:'Sports Psychology',nordic:'Competition Narrative',write:'Health & Nutrition Review'}},
-    {id:'t7',month:'February',theme:'Inventions & Technology',icon:'⚙️',
-     sessions:{factual:'Great Inventions',fiction:'Young Inventor Story',deeper:'Robotics & AI',nordic:'Nordic Tech Pioneer',write:'Digital Life Review'}},
-    {id:'t8',month:'March',theme:'Vikings History & Myths',icon:'⚔️',
-     sessions:{factual:'Who Were the Vikings?',fiction:'Viking Adventure Story',deeper:'Ancient Egypt',nordic:'Norse Mythology Tale',write:'Greek Heroes & Myths'}},
-    {id:'t9',month:'April',theme:'Nature & Environment',icon:'🌿',
-     sessions:{factual:'Forests & Ecosystems',fiction:'Ronja Forest Story',deeper:'Wildlife Protection',nordic:'Swedish Nature Legend',write:'Climate Change Review'}},
-    {id:'t10',month:'May',theme:'Sports & Psychology',icon:'🏆',
-     sessions:{factual:'Olympic History',fiction:'Sports Narrative',deeper:'Mental Strength',nordic:'Swedish Athlete Story',write:'Motivation & Competition'}},
-    {id:'t11',month:'June',theme:'Science & Discovery',icon:'🔬',
+    {id:'t1',month:'June',theme:'Science & Discovery',icon:'🔬',
      sessions:{factual:'Electricity & Energy',fiction:'Science Lab Story',deeper:'Young Scientist Discovery',nordic:'Nordic Inventor Tale',write:'Future Science Review'}},
-    {id:'t12',month:'July',theme:'Mysteries & Great Adventures',icon:'🔍',
+    {id:'t2',month:'July',theme:'Mysteries & Great Adventures',icon:'🔍',
      sessions:{factual:'Ancient Mysteries',fiction:'Detective Story',deeper:'Lost Cities',nordic:'Scandinavian Mystery',write:'Crime Solving & Logic'}},
+    {id:'t3',month:'August',theme:'Human Nature & Adventure',icon:'🧗',
+     sessions:{factual:'Human Survival Science',fiction:'Survival Story',deeper:'Explorers & Expeditions',nordic:'Pippi-Inspired Independence',write:'Courage & Leadership Review'}},
+    {id:'t4',month:'September',theme:'Oceans & Discovery',icon:'🌊',
+     sessions:{factual:'Ocean Ecosystems',fiction:'Lost at Sea Story',deeper:'Deep Sea Mysteries',nordic:'Scandinavian Sea Tale',write:'Climate & Oceans Review'}},
+    {id:'t5',month:'October',theme:'Space & Future Worlds',icon:'🚀',
+     sessions:{factual:'Space Exploration',fiction:'Sci-Fi Adventure',deeper:'Mars Missions',nordic:'Nordic Space Tale',write:'Artificial Intelligence Review'}},
+    {id:'t6',month:'November',theme:'Extreme Weather & Survival',icon:'⛈️',
+     sessions:{factual:'Natural Disasters',fiction:'Storm Survival Story',deeper:'Volcanoes & Earthquakes',nordic:'Ronja Forest Survival',write:'Climate Challenges Review'}},
+    {id:'t7',month:'December',theme:'Winter & Nordic Culture',icon:'❄️',
+     sessions:{factual:'Arctic Life',fiction:'Tomten Winter Tale',deeper:'Nordic Traditions',nordic:'Northern Lights Myth',write:'Winter Around the World'}},
+    {id:'t8',month:'January',theme:'Human Body & Mind',icon:'🧠',
+     sessions:{factual:'The Brain & Memory',fiction:'Psychological Mystery',deeper:'Sports Psychology',nordic:'Competition Narrative',write:'Health & Nutrition Review'}},
+    {id:'t9',month:'February',theme:'Inventions & Technology',icon:'⚙️',
+     sessions:{factual:'Great Inventions',fiction:'Young Inventor Story',deeper:'Robotics & AI',nordic:'Nordic Tech Pioneer',write:'Digital Life Review'}},
+    {id:'t10',month:'March',theme:'Vikings History & Myths',icon:'⚔️',
+     sessions:{factual:'Who Were the Vikings?',fiction:'Viking Adventure Story',deeper:'Ancient Egypt',nordic:'Norse Mythology Tale',write:'Greek Heroes & Myths'}},
+    {id:'t11',month:'April',theme:'Nature & Environment',icon:'🌿',
+     sessions:{factual:'Forests & Ecosystems',fiction:'Ronja Forest Story',deeper:'Wildlife Protection',nordic:'Swedish Nature Legend',write:'Climate Change Review'}},
+    {id:'t12',month:'May',theme:'Sports & Psychology',icon:'🏆',
+     sessions:{factual:'Olympic History',fiction:'Sports Narrative',deeper:'Mental Strength',nordic:'Swedish Athlete Story',write:'Motivation & Competition'}},
   ]
 };
 
@@ -718,44 +811,111 @@ let S={
 };
 let _sbData={profile:'alexander',topicId:'t1',sessionType:'factual',generated:null};
 
-// ===== CLOUD =====
-function isCloudOn(){return !!(readCred('eg_supa_url')&&readCred('eg_supa_key'));}
+// ===== CLOUD — MathGenius-grade implementation =====
+function isCloudEnabled(){
+  return !!(readCred('eg_supa_url')&&readCred('eg_supa_key'));
+}
+// Keep old name as alias for backwards compat
+function isCloudOn(){return isCloudEnabled();}
 
-async function pushToCloud(){
-  if(!isCloudOn())return;
-  const url=readCred('eg_supa_url');const key=readCred('eg_supa_key');
-  const keys=['eg_prog_alexander','eg_prog_estelle','eg_hist_alexander','eg_hist_estelle',
-    'eg_streak_alexander','eg_streak_estelle','eg_lastday_alexander','eg_lastday_estelle',
-    'eg_pending_alexander','eg_pending_estelle','eg_icon_alexander','eg_icon_estelle',
-    'eg_apikey','eg_parent_pin'];
+function clearCred(key){
+  localStorage.removeItem(key);
+  document.cookie=key+'=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';
+}
+
+// Clean Supabase API wrapper (from MathGenius)
+async function supaFetch(path,method='GET',body=null){
+  const url=readCred('eg_supa_url');
+  const key=readCred('eg_supa_key');
+  if(!url||!key)return null;
+  try{
+    const opts={method,headers:{
+      'apikey':key,'Authorization':'Bearer '+key,
+      'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'
+    }};
+    if(body)opts.body=JSON.stringify(body);
+    const r=await fetch(url+'/rest/v1/'+path,opts);
+    if(!r.ok){const t=await r.text();console.warn('Supabase error:',r.status,t);return null;}
+    const txt=await r.text();
+    return txt?JSON.parse(txt):[];
+  }catch(e){console.warn('Cloud sync error:',e);return null;}
+}
+
+// Single key push with badge
+async function cloudSet(key,value){
+  if(!isCloudEnabled())return;
+  const result=await supaFetch('englishgenius_data','POST',{key,value,updated_at:new Date().toISOString()});
+  if(result!==null)showSyncBadge();
+}
+
+let _syncTimer=null;
+function showSyncBadge(){
+  const el=document.getElementById('sync-indicator');
+  if(!el)return;
+  el.classList.add('show');
+  clearTimeout(_syncTimer);
+  _syncTimer=setTimeout(()=>el.classList.remove('show'),1800);
+}
+
+async function pushToCloud(silent=false){
+  if(!isCloudEnabled()){if(!silent)showToast('No cloud connected');return;}
+  if(!silent)showToast('Pushing to cloud...');
+  const keys=[
+    'eg_prog_alexander','eg_prog_estelle',
+    'eg_hist_alexander','eg_hist_estelle',
+    'eg_streak_alexander','eg_streak_estelle',
+    'eg_lastday_alexander','eg_lastday_estelle',
+    'eg_pending_alexander','eg_pending_estelle',
+    'eg_corrections_alexander','eg_corrections_estelle',
+    'eg_icon_alexander','eg_icon_estelle',
+    'eg_apikey','eg_parent_pin'
+  ];
+  let count=0;
   for(const k of keys){
-    const v=localStorage.getItem(k);if(!v)continue;
-    try{await fetch(`${url}/rest/v1/englishgenius_data`,{method:'POST',
-      headers:{'Content-Type':'application/json','apikey':key,'Authorization':'Bearer '+key,'Prefer':'resolution=merge-duplicates'},
-      body:JSON.stringify({key:k,value:v,updated_at:new Date().toISOString()})});}catch(e){}
+    const v=localStorage.getItem(k);
+    if(!v)continue;
+    try{
+      // Store value as-is (string) for compatibility
+      const result=await supaFetch('englishgenius_data','POST',{key:k,value:v,updated_at:new Date().toISOString()});
+      if(result!==null)count++;
+    }catch(e){}
   }
-  showToast('☁️ Pushed to cloud');
+  showSyncBadge();
+  if(!silent)showToast(`☁️ Pushed ${count} items`);
 }
 
 async function pullFromCloud(silent=false){
-  if(!isCloudOn())return;
-  const url=readCred('eg_supa_url');const key=readCred('eg_supa_key');
-  try{
-    const r=await fetch(`${url}/rest/v1/englishgenius_data?select=key,value`,
-      {headers:{'apikey':key,'Authorization':'Bearer '+key}});
-    if(!r.ok)return;
-    const rows=await r.json();
-    for(const row of rows){
-      if(row.key==='eg_prog_alexander'||row.key==='eg_prog_estelle'){
-        const local=readData(row.key,{});const cloud=JSON.parse(row.value||'{}');
-        const merged=mergeProgress(local,cloud);
-        saveData(row.key,merged);
-      } else {
-        if(!localStorage.getItem(row.key))localStorage.setItem(row.key,row.value);
+  if(!isCloudEnabled()){if(!silent)showToast('No cloud connected');return;}
+  const rows=await supaFetch('englishgenius_data?select=key,value');
+  if(!rows||!Array.isArray(rows)){
+    if(!silent)showToast('Pull failed — check connection');
+    return;
+  }
+  let kept=0;
+  rows.forEach(row=>{
+    try{
+      const cloudVal=typeof row.value==='string'?row.value:JSON.stringify(row.value);
+      // Never overwrite pending sessions if local has more recent/more items
+      if(row.key.startsWith('eg_pending_')){
+        const local=JSON.parse(localStorage.getItem(row.key)||'[]');
+        const cloud=JSON.parse(cloudVal||'[]');
+        if(local.length>cloud.length){kept++;return;}
       }
-    }
-    if(!silent)showToast('☁️ Pulled from cloud');
-  }catch(e){if(!silent)showToast('Cloud pull failed');}
+      // Smart merge for progress — never downgrade sessions done
+      if(row.key.startsWith('eg_prog_')){
+        const local=JSON.parse(localStorage.getItem(row.key)||'null');
+        const cloud=JSON.parse(cloudVal||'null');
+        if(local&&cloud){
+          const merged=mergeProgress(local,cloud);
+          localStorage.setItem(row.key,JSON.stringify(merged));
+          return;
+        }
+      }
+      localStorage.setItem(row.key,cloudVal);
+    }catch(e){}
+  });
+  showSyncBadge();
+  if(!silent)showToast(`☁️ Pulled ${rows.length} items${kept?' · '+kept+' local sessions kept':''}`);
 }
 
 function mergeProgress(local,cloud){
@@ -763,27 +923,61 @@ function mergeProgress(local,cloud){
   for(const tid in cloud){
     if(!out[tid]){out[tid]=cloud[tid];continue;}
     const l=out[tid],c=cloud[tid];
-    const lvlOrder=['','factual','fiction','deeper','nordic','write','test'];
-    const li=lvlOrder.indexOf(l.lastCompleted||''),ci=lvlOrder.indexOf(c.lastCompleted||'');
-    if(ci>li)out[tid]={...l,...c};
+    // Keep done status from either
     if(c.done&&!l.done)out[tid].done=true;
+    if(c.testNeeded&&!l.testNeeded)out[tid].testNeeded=true;
+    // Merge sessions — keep any session marked true in either
+    if(c.sessions&&l.sessions){
+      out[tid].sessions={...l.sessions};
+      for(const st in c.sessions){
+        if(c.sessions[st])out[tid].sessions[st]=true;
+      }
+    }
   }
   return out;
 }
 
-// Auto-sync
-setInterval(async()=>{if(S.phase===0&&isCloudOn()){await pullFromCloud(true);refreshProfileTags();}},60000);
+// Auto-sync — skip if child is in active session
+setInterval(async()=>{
+  const inSession=document.getElementById('screen-session')?.classList.contains('active');
+  if(!inSession&&isCloudEnabled()){
+    await pullFromCloud(true);
+    refreshProfileTags();
+  }
+},60000);
+
 document.addEventListener('visibilitychange',async()=>{
-  if(document.visibilityState==='visible'&&isCloudOn()&&S.phase===0){await pullFromCloud(true);refreshProfileTags();}
+  if(document.visibilityState==='visible'&&isCloudEnabled()){
+    const inSession=document.getElementById('screen-session')?.classList.contains('active');
+    if(inSession)return;
+    try{
+      await pullFromCloud(true);
+      refreshProfileTags();
+      // If parent dashboard is open, refresh it
+      const dashActive=document.getElementById('screen-parent-dash')?.classList.contains('active');
+      if(dashActive)showParentDash();
+    }catch(e){}
+  }
 });
 
 // ===== INIT =====
 window.addEventListener('load',async()=>{
   _key=readCred('eg_apikey')||'';
-  const supaUrl=readCred('eg_supa_url');const supaKey=readCred('eg_supa_key');
-  if(supaUrl&&supaKey){await pullFromCloud(true);}
-  if(_key){showScreen('screen-profile');refreshProfileTags();}
-  else showScreen('screen-api');
+  const supaUrl=readCred('eg_supa_url');
+  const supaKey=readCred('eg_supa_key');
+  if(supaUrl&&supaKey){
+    await pullFromCloud(true);
+  }
+  if(_key){
+    showScreen('screen-profile');
+    refreshProfileTags();
+  } else {
+    showScreen('screen-api');
+    // Hint if cloud creds exist but API key missing
+    if(supaUrl&&supaKey){
+      setTimeout(()=>showToast('Tap "Restore from cloud" to recover your data'),800);
+    }
+  }
 });
 
 function refreshProfileTags(){
@@ -793,6 +987,22 @@ function refreshProfileTags(){
   document.getElementById('est-streak').textContent='🔥 '+estStreak+' day streak';
   document.getElementById('alex-avatar').textContent=readCred('eg_icon_alexander')||'🦊';
   document.getElementById('est-avatar').textContent=readCred('eg_icon_estelle')||'🦋';
+  // Show current topic on profile cards
+  const alexNext=getNextTopicForProfile('alexander');
+  const estNext=getNextTopicForProfile('estelle');
+  const alexTag=document.getElementById('alex-topic');
+  const estTag=document.getElementById('est-topic');
+  if(alexTag)alexTag.textContent=alexNext;
+  if(estTag)estTag.textContent=estNext;
+}
+
+function getNextTopicForProfile(profile){
+  const topics=TOPICS[profile];
+  for(const t of topics){
+    const st=getTopicStatus(profile,t.id);
+    if(st==='active'||st==='test')return t.icon+' '+t.theme;
+  }
+  return topics[0].icon+' '+topics[0].theme;
 }
 
 // ===== API SETUP =====
@@ -877,7 +1087,10 @@ function switchTopicsTab(n){
 }
 
 function getProgress(profile){return readData('eg_prog_'+profile,{});}
-function saveProgress(profile,prog){saveData('eg_prog_'+profile,prog);if(isCloudOn())setTimeout(pushToCloud,500);}
+function saveProgress(profile,prog){
+  saveData('eg_prog_'+profile,prog);
+  if(isCloudEnabled())cloudSet('eg_prog_'+profile,JSON.stringify(prog));
+}
 
 function getTopicStatus(profile,tid){
   const prog=getProgress(profile);
@@ -911,16 +1124,26 @@ function renderTopicsTab(){
     total++;
   });
   const pct=Math.round(done/total*100);
-  let html=`<div class="overall-prog"><h3>Overall progress — ${_profile==='alexander'?'Alexander':'Estelle'}</h3>
+  const name=_profile==='alexander'?'Alexander':'Estelle';
+  let html=`<div class="overall-prog">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+      <h3>${name} — ${done} of ${total} topics</h3>
+      <span style="font-size:12px;font-weight:800;color:var(--navy)">${pct}%</span>
+    </div>
     <div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>
-    <div class="prog-lbl">${done} of ${total} topics complete</div></div>
-    <div class="topics-grid">`;
+  </div>
+  <div class="topics-grid">`;
   topics.forEach(t=>{
     const status=getTopicStatus(_profile,t.id);
     const tp=prog[t.id]||{sessions:{}};
     const nextSt=getNextSessionType(_profile,t.id);
     const badgeMap={locked:'badge-locked',active:'badge-active',test:'badge-test',done:'badge-done'};
-    const labelMap={locked:'🔒 Locked',active:`▶ ${SESSION_LABELS[nextSt]||'Test'}`,test:'⭐ Test!',done:'✓ Done'};
+    const labelMap={
+      locked:'🔒 Locked',
+      active:`▶ ${SESSION_ICONS[nextSt]||''} ${SESSION_LABELS[nextSt]||''}`,
+      test:'⭐ Test!',
+      done:'✓ Done'
+    };
     const hasReady=readData('eg_next_'+_profile,null);
     let badgeText=labelMap[status];
     if(hasReady&&hasReady.topicId===t.id)badgeText='📋 Ready';
@@ -1074,40 +1297,59 @@ async function genSession(profile,tid,sessionType,isTest){
 
   const testInstructions=isTest?`This is a topic MASTERY TEST covering the theme "${topic.theme}". Mix question types across all session types. Include vocabulary, comprehension, inference, evidence, and opinion questions. Passage should be fresh and not repeat previous sessions.`:'';
 
+  const styleGuide=`
+PASSAGE WRITING RULES — follow these strictly:
+- Write like a brilliant storyteller who LOVES this subject — curious, vivid, full of wonder
+- Open with a HOOK — a surprising fact, a question, or a dramatic moment (NOT "In this passage...")
+- Include at least 2 WOW FACTS — things that make a child say "whoa!" or "no way!"
+- Use vivid comparisons: "as heavy as a school bus", "hotter than 10,000 suns", "fast enough to circle the Earth in minutes"
+- SHORT punchy sentences mixed with longer descriptive ones
+- Write TO the reader — "Imagine you are...", "Have you ever wondered...", "Picture this..."
+- For FICTION: real adventure, tension, emotion — characters we care about
+- For NORDIC stories: cosy magical atmosphere — forests, snow, firelight, ancient mystery
+- For FACTUAL: discovery mindset — we are explorers uncovering secrets together
+- NEVER write like a textbook. No "it is important to note that", no "furthermore", no lists of dry facts
+- End with something that leaves them thinking or wanting to know more`;
+
   const prompt=`You are generating an English reading session for a ${age}-year-old (Year ${grade}) Swedish student learning English as a subject. Topic theme: "${topic.theme}" (${topic.month}).
 ${isTest?testInstructions:`Session type: ${typeDesc[sessionType]}`}
 
+${styleGuide}
+
 IMPORTANT: Return ONLY valid JSON. No markdown, no backticks, no explanation.
 
-Generate a complete session with:
-1. A reading passage (${words} words, engaging and age-appropriate)
-2. Exactly 9 comprehension questions with expected answers
+Generate:
+1. A reading passage (${words} words) — MUST follow the writing rules above
+2. Exactly 9 comprehension questions
 3. 1 writing task (Q10)
+4. 2 Wikipedia article titles for relevant images
 
 Question mix: ${JSON.stringify(qMix)}
-Question types to use: vocab (word meanings), factual (directly in text), inference (read between lines), evidence (find proof in text), opinion (supported view)
+Question types: vocab, factual, inference, evidence, opinion
+Questions 1-3 accessible, 4-7 medium, 8-9 harder.
+For inference/evidence/opinion questions include a SHORT aiNote for parent guidance.
 
-The 9 questions must relate directly to the passage. Questions 1-3 should be accessible (vocab/factual), Questions 4-7 medium (inference/evidence), Questions 8-9 harder (analysis/opinion).
+For imageTopics: 2 real Wikipedia article titles with good photos. Must be real articles. Child-safe only.
+Examples of good imageTopics: "Magnet", "Great white shark", "Viking longship", "Amazon rainforest", "Aurora borealis"
 
-For inference/evidence/opinion questions include a SHORT AI note explaining what makes a good answer (for parent guidance).
-
-Return exactly this JSON structure:
+Return exactly this JSON:
 {
   "passage": "...",
+  "imageTopics": ["Wikipedia article 1", "Wikipedia article 2"],
   "questions": [
-    {"type":"vocab","q":"Question text?","expected":"Expected answer","aiNote":""},
-    {"type":"factual","q":"Question text?","expected":"Expected answer","aiNote":""},
-    {"type":"factual","q":"Question text?","expected":"Expected answer","aiNote":""},
-    {"type":"factual","q":"Question text?","expected":"Expected answer","aiNote":""},
-    {"type":"inference","q":"Question text?","expected":"Expected answer","aiNote":"Brief note for parent"},
-    {"type":"evidence","q":"Quote a phrase that shows X...","expected":"Phrase1 / Phrase2 / Phrase3","aiNote":"Multiple valid quotes listed"},
-    {"type":"inference","q":"Question text?","expected":"Expected answer","aiNote":"Brief note"},
-    {"type":"opinion","q":"What do you think about...?","expected":"Any supported view + reason","aiNote":"Accept any reasoned opinion"},
-    {"type":"opinion","q":"Question text?","expected":"Any supported view + reason","aiNote":"Accept any reasoned opinion"}
+    {"type":"vocab","q":"...","expected":"...","aiNote":""},
+    {"type":"factual","q":"...","expected":"...","aiNote":""},
+    {"type":"factual","q":"...","expected":"...","aiNote":""},
+    {"type":"factual","q":"...","expected":"...","aiNote":""},
+    {"type":"inference","q":"...","expected":"...","aiNote":"Brief note"},
+    {"type":"evidence","q":"Quote a phrase that shows X...","expected":"phrase1 / phrase2","aiNote":"Multiple valid quotes"},
+    {"type":"inference","q":"...","expected":"...","aiNote":"Brief note"},
+    {"type":"opinion","q":"What do you think...?","expected":"Any supported view","aiNote":"Accept any reasoned opinion"},
+    {"type":"opinion","q":"...","expected":"Any supported view","aiNote":"Accept any reasoned opinion"}
   ],
   "writeTask": {
-    "prompt": "Write a paragraph answering: [specific question requiring 3-4 sentences]",
-    "keyPoints": "Good answer should include: [3-4 bullet points describing what makes a strong response]"
+    "prompt": "Write a paragraph answering: [specific engaging question, 3-4 sentences]",
+    "keyPoints": "Good answer includes: [3-4 bullet points for parent]"
   }
 }`;
 
@@ -1122,6 +1364,41 @@ Return exactly this JSON structure:
   let text=d.content?.[0]?.text||'{}';
   text=text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
   return JSON.parse(text);
+}
+
+// ===== WIKIPEDIA IMAGE FETCHING =====
+async function fetchWikiImage(topic){
+  try{
+    // Wikipedia REST v1 summary — returns thumbnail directly, CORS-enabled
+    const url=`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(topic)}`;
+    const r=await fetch(url,{headers:{'Accept':'application/json'}});
+    if(!r.ok)return null;
+    const d=await r.json();
+    return d?.thumbnail?.source||d?.originalimage?.source||null;
+  }catch(e){return null;}
+}
+
+async function loadPassageImages(imageTopics){
+  if(!imageTopics||!imageTopics.length)return;
+  const container=document.getElementById('passage-img-row');
+  if(!container)return;
+  const results=await Promise.all(imageTopics.slice(0,2).map(t=>fetchWikiImage(t)));
+  results.forEach((src,i)=>{
+    if(!src)return;
+    const topic=imageTopics[i];
+    const wrap=document.createElement('div');
+    wrap.style.cssText='flex:1;min-width:0;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;background:#f5f5f5';
+    const img=document.createElement('img');
+    img.src=src;img.alt=topic;img.title=topic;
+    img.style.cssText='width:100%;height:150px;object-fit:cover;display:block';
+    img.onerror=()=>wrap.remove();
+    const lbl=document.createElement('div');
+    lbl.textContent=topic;
+    lbl.style.cssText='font-size:10px;font-weight:700;color:#888;text-align:center;padding:4px 6px;background:#fafafa';
+    wrap.appendChild(img);wrap.appendChild(lbl);
+    container.appendChild(wrap);
+    container.style.cssText='display:flex;gap:8px;margin-bottom:4px';
+  });
 }
 
 // ===== SESSION PHASES =====
@@ -1150,18 +1427,22 @@ function renderPhase1(){
   const body=document.getElementById('sess-body');
   body.innerHTML=`
     <div class="reading-lbl">📖 Read &amp; annotate with your stylus</div>
+    <div id="passage-img-row" style="display:none;gap:8px;margin-bottom:4px"></div>
     <div class="passage-wrap" id="passage-wrap">
       <div class="passage-txt" id="passage-txt">${S.sessionData.passage}</div>
       <canvas id="annotation-canvas"></canvas>
       <div class="anno-tools">
-        <div class="anno-tool active" id="tool-pen" style="background:#1a1a2e" onclick="setTool('pen')" title="Draw">✏️</div>
+        <div class="anno-tool active" id="tool-pen" style="background:#1a1a2e" onclick="setTool('pen')" title="Pen">✏️</div>
         <div class="anno-tool" id="tool-hl" style="background:#FEF08A" onclick="setTool('highlight')" title="Highlight"></div>
         <div class="anno-tool" id="tool-circle" style="background:transparent;border-color:#3B82F6" onclick="setTool('circle')" title="Circle">⭕</div>
-        <button class="anno-clear" onclick="clearAnnotation()">Clear</button>
+        <div class="anno-tool" id="tool-eraser" style="background:#fff" onclick="setTool('eraser')" title="Eraser">🧹</div>
+        <button class="anno-btn" onclick="undoAnnotation()">↩ Undo</button>
+        <button class="anno-btn" onclick="clearAnnotation()" style="margin-left:auto">🗑 Clear</button>
       </div>
     </div>
     <button class="done-reading-btn" onclick="goToPhase2()">Done reading — start questions →</button>`;
   initAnnotationCanvas();
+  if(S.sessionData.imageTopics){loadPassageImages(S.sessionData.imageTopics);}
 }
 
 let _annoTool='pen';
@@ -1181,6 +1462,7 @@ function initAnnotationCanvas(){
   const ctx=canvas.getContext('2d');
   let drawing=false,lastX=0,lastY=0,startX=0,startY=0;
   let snapshot=null;
+  _annoUndoStack=[];
 
   const getPos=(e)=>{
     const r=canvas.getBoundingClientRect();
@@ -1188,36 +1470,60 @@ function initAnnotationCanvas(){
     return{x:(src.clientX-r.left),y:(src.clientY-r.top)};
   };
   const blockSwipe=e=>{e.preventDefault();e.stopPropagation();};
-  ['touchstart','touchmove','touchend','gesturestart','gesturechange','gestureend'].forEach(ev=>
+  ['touchstart','touchmove','touchend','touchcancel','gesturestart','gesturechange','gestureend'].forEach(ev=>
     canvas.addEventListener(ev,blockSwipe,{passive:false}));
 
   canvas.addEventListener('pointerdown',e=>{
     e.preventDefault();canvas.setPointerCapture(e.pointerId);
     drawing=true;const p=getPos(e);lastX=p.x;lastY=p.y;startX=p.x;startY=p.y;
+    // Save undo state before stroke
+    _annoUndoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    if(_annoUndoStack.length>12)_annoUndoStack.shift();
     if(_annoTool==='circle')snapshot=ctx.getImageData(0,0,canvas.width,canvas.height);
+    if(_annoTool==='eraser'){ctx.globalCompositeOperation='destination-out';}
+    else{ctx.globalCompositeOperation='source-over';}
   });
   canvas.addEventListener('pointermove',e=>{
     if(!drawing)return;e.preventDefault();
     const p=getPos(e);
     if(_annoTool==='pen'){
-      ctx.beginPath();ctx.strokeStyle='rgba(26,26,46,0.8)';ctx.lineWidth=2;ctx.lineCap='round';
+      ctx.beginPath();ctx.strokeStyle='rgba(26,26,46,0.85)';ctx.lineWidth=2.5;ctx.lineCap='round';
       ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.stroke();
     }else if(_annoTool==='highlight'){
-      ctx.beginPath();ctx.strokeStyle='rgba(254,240,138,0.6)';ctx.lineWidth=16;ctx.lineCap='round';
+      ctx.beginPath();ctx.strokeStyle='rgba(254,240,138,0.55)';ctx.lineWidth=18;ctx.lineCap='round';
       ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.stroke();
     }else if(_annoTool==='circle'){
       ctx.putImageData(snapshot,0,0);
-      ctx.beginPath();ctx.strokeStyle='rgba(59,130,246,0.8)';ctx.lineWidth=2;
+      ctx.beginPath();ctx.strokeStyle='rgba(59,130,246,0.85)';ctx.lineWidth=2.5;
       const rx=Math.abs(p.x-startX)/2,ry=Math.abs(p.y-startY)/2;
       ctx.ellipse(startX+(p.x-startX)/2,startY+(p.y-startY)/2,rx,ry,0,0,2*Math.PI);
       ctx.stroke();
+    }else if(_annoTool==='eraser'){
+      ctx.beginPath();ctx.lineWidth=20;ctx.lineCap='round';
+      ctx.strokeStyle='rgba(0,0,0,1)';
+      ctx.moveTo(lastX,lastY);ctx.lineTo(p.x,p.y);ctx.stroke();
     }
     lastX=p.x;lastY=p.y;
   });
-  canvas.addEventListener('pointerup',()=>{drawing=false;snapshot=null;});
+  canvas.addEventListener('pointerup',()=>{
+    drawing=false;snapshot=null;
+    ctx.globalCompositeOperation='source-over';
+  });
 }
 
-function clearAnnotation(){document.getElementById('annotation-canvas')?.getContext('2d').clearRect(0,0,9999,9999);}
+let _annoUndoStack=[];
+function clearAnnotation(){
+  const canvas=document.getElementById('annotation-canvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  _annoUndoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+function undoAnnotation(){
+  const canvas=document.getElementById('annotation-canvas');
+  if(!canvas||!_annoUndoStack.length)return;
+  canvas.getContext('2d').putImageData(_annoUndoStack.pop(),0,0);
+}
 
 function goToPhase2(){
   const canvas=document.getElementById('annotation-canvas');
@@ -1247,14 +1553,17 @@ function renderQuestion(qi){
       <div class="peek-bar-lbl">📖 Passage reference</div>
       <span id="peek-icon">▾</span>
     </div>
-    <div class="peek-body" id="peek-body">${S.sessionData.passage}</div>
+    <div class="peek-body" id="peek-body">
+      <div id="peek-img-row" style="display:none;gap:6px;margin-bottom:8px"></div>
+      ${S.sessionData.passage}
+    </div>
     <div>
       <div class="q-lbl">${q.type.toUpperCase()} · Q${qi+1} of 9</div>
       <div class="q-text">${q.q}</div>
     </div>
     <div class="answer-wrap">
       <canvas id="answer-canvas"></canvas>
-      <button class="clear-ans-btn" onclick="clearAnswerCanvas()">Clear</button>
+      <div class="canvas-top-btns"><button class="canvas-action-btn" onclick="undoAnswerCanvas()">↩ Undo</button><button class="canvas-action-btn" onclick="clearAnswerCanvas()">🗑</button></div>
     </div>
     <div style="display:flex;gap:8px;margin-top:4px">
       ${qi>0?`<button id="prev-q-btn" style="flex:1;background:var(--white);border:2px solid var(--navy);color:var(--navy);border-radius:12px;padding:13px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">‹ Previous</button>`:'<div style="flex:1"></div>'}
@@ -1269,6 +1578,23 @@ function togglePeek(){
   _peekOpen=!_peekOpen;
   document.getElementById('peek-body').style.display=_peekOpen?'block':'none';
   document.getElementById('peek-icon').textContent=_peekOpen?'▴':'▾';
+  // Load peek images once on first open
+  if(_peekOpen&&S.sessionData?.imageTopics){
+    const row=document.getElementById('peek-img-row');
+    if(row&&row.children.length===0){
+      S.sessionData.imageTopics.slice(0,2).forEach(async topic=>{
+        const src=await fetchWikiImage(topic);
+        if(src&&row){
+          const img=document.createElement('img');
+          img.src=src;img.alt=topic;
+          img.style.cssText='height:80px;border-radius:6px;object-fit:cover;flex:1;min-width:0';
+          img.onerror=()=>img.style.display='none';
+          row.appendChild(img);
+          row.style.display='flex';
+        }
+      });
+    }
+  }
 }
 
 function initAnswerCanvas(qi){
@@ -1283,21 +1609,24 @@ function initAnswerCanvas(qi){
   // Draw lines
   ctx.strokeStyle='#f0f0f0';ctx.lineWidth=1;
   for(let y=30;y<h;y+=30){ctx.beginPath();ctx.moveTo(10,y);ctx.lineTo(w-10,y);ctx.stroke();}
+  _ansUndoStack=[];
   
   let drawing=false,lastX=0,lastY=0;
   const blockSwipe=e=>{e.preventDefault();e.stopPropagation();};
-  ['touchstart','touchmove','touchend','gesturestart'].forEach(ev=>
+  ['touchstart','touchmove','touchend','touchcancel','gesturestart'].forEach(ev=>
     canvas.addEventListener(ev,blockSwipe,{passive:false}));
   canvas.addEventListener('pointerdown',e=>{
     e.preventDefault();canvas.setPointerCapture(e.pointerId);
     const r=canvas.getBoundingClientRect();
     lastX=(e.clientX-r.left);lastY=(e.clientY-r.top);drawing=true;
+    _ansUndoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    if(_ansUndoStack.length>12)_ansUndoStack.shift();
   });
   canvas.addEventListener('pointermove',e=>{
     if(!drawing)return;e.preventDefault();
     const r=canvas.getBoundingClientRect();
     const x=(e.clientX-r.left),y=(e.clientY-r.top);
-    ctx.beginPath();ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.lineCap='round';
+    ctx.beginPath();ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.5;ctx.lineCap='round';
     ctx.moveTo(lastX,lastY);ctx.lineTo(x,y);ctx.stroke();
     lastX=x;lastY=y;
   });
@@ -1309,12 +1638,21 @@ function initAnswerCanvas(qi){
   }
 }
 
+let _ansUndoStack=[];
+function undoAnswerCanvas(){
+  const canvas=document.getElementById('answer-canvas');
+  if(!canvas||!_ansUndoStack.length)return;
+  canvas.getContext('2d').putImageData(_ansUndoStack.pop(),0,0);
+}
+
 function clearAnswerCanvas(){
   const canvas=document.getElementById('answer-canvas');
   if(!canvas)return;
   const dpr=window.devicePixelRatio||1;
   const w=canvas.width/dpr,h=canvas.height/dpr;
-  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,w*dpr,h*dpr);ctx.scale(dpr,dpr);
+  const ctx=canvas.getContext('2d');
+  _ansUndoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+  ctx.clearRect(0,0,canvas.width,canvas.height);ctx.scale(dpr,dpr);
   ctx.strokeStyle='#f0f0f0';ctx.lineWidth=1;
   for(let y=30;y<h;y+=30){ctx.beginPath();ctx.moveTo(10,y);ctx.lineTo(w-10,y);ctx.stroke();}
 }
@@ -1355,7 +1693,7 @@ function renderPhase3(){
     </div>
     <div class="write-wrap">
       <canvas id="write-canvas"></canvas>
-      <button class="clear-write-btn" onclick="clearWriteCanvas()">Clear</button>
+      <div class="canvas-top-btns"><button class="canvas-action-btn" onclick="undoWriteCanvas()">↩ Undo</button><button class="canvas-action-btn" onclick="clearWriteCanvas()">🗑</button></div>
     </div>`;
   document.getElementById('send-bar').style.display='flex';
   updateSendMeta();
@@ -1371,28 +1709,37 @@ function initWriteCanvas(){
   canvas.style.width=w+'px';canvas.style.height=h+'px';
   canvas.width=w*dpr;canvas.height=h*dpr;
   const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
-  // Dot grid
   ctx.fillStyle='#e0e0e0';
   for(let y=20;y<h;y+=20)for(let x=20;x<w;x+=20){ctx.beginPath();ctx.arc(x,y,1.5,0,2*Math.PI);ctx.fill();}
+  _writeUndoStack=[];
   
   let drawing=false,lastX=0,lastY=0;
   const blockSwipe=e=>{e.preventDefault();e.stopPropagation();};
-  ['touchstart','touchmove','touchend','gesturestart'].forEach(ev=>
+  ['touchstart','touchmove','touchend','touchcancel','gesturestart'].forEach(ev=>
     canvas.addEventListener(ev,blockSwipe,{passive:false}));
   canvas.addEventListener('pointerdown',e=>{
     e.preventDefault();canvas.setPointerCapture(e.pointerId);
     const r=canvas.getBoundingClientRect();
     lastX=e.clientX-r.left;lastY=e.clientY-r.top;drawing=true;
+    _writeUndoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
+    if(_writeUndoStack.length>12)_writeUndoStack.shift();
   });
   canvas.addEventListener('pointermove',e=>{
     if(!drawing)return;e.preventDefault();
     const r=canvas.getBoundingClientRect();
     const x=e.clientX-r.left,y=e.clientY-r.top;
-    ctx.beginPath();ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2;ctx.lineCap='round';
+    ctx.beginPath();ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.5;ctx.lineCap='round';
     ctx.moveTo(lastX,lastY);ctx.lineTo(x,y);ctx.stroke();
     lastX=x;lastY=y;
   });
   canvas.addEventListener('pointerup',()=>{drawing=false;});
+}
+
+let _writeUndoStack=[];
+function undoWriteCanvas(){
+  const canvas=document.getElementById('write-canvas');
+  if(!canvas||!_writeUndoStack.length)return;
+  canvas.getContext('2d').putImageData(_writeUndoStack.pop(),0,0);
 }
 
 function clearWriteCanvas(){
@@ -1511,96 +1858,293 @@ Keep comment brief and helpful for parent review. For vocab/factual: no comment 
 
 // ===== PARENT PIN =====
 let _pinBuffer='';
-function showParentPin(){_pinBuffer='';updatePinDots();document.getElementById('pin-error').textContent='';showScreen('screen-parent-pin');}
-function pinPress(k){
-  if(k==='back')_pinBuffer=_pinBuffer.slice(0,-1);
-  else if(k==='clear')_pinBuffer='';
-  else if(_pinBuffer.length<4)_pinBuffer+=k;
+function showParentPin(){
+  _pinBuffer='';
   updatePinDots();
-  if(_pinBuffer.length===4){
-    const saved=readData('eg_parent_pin','1234');
-    if(_pinBuffer===saved){showParentDash();}
-    else{document.getElementById('pin-error').textContent='Wrong PIN. Try again.';_pinBuffer='';setTimeout(()=>{updatePinDots();document.getElementById('pin-error').textContent='';},500);}
+  document.getElementById('pin-error').textContent='';
+  showScreen('screen-parent-pin');
+}
+function pinPress(k){
+  if(k==='back'){_pinBuffer=_pinBuffer.slice(0,-1);updatePinDots();return;}
+  if(k==='clear'){_pinBuffer='';updatePinDots();return;}
+  if(_pinBuffer.length>=4)return;
+  _pinBuffer+=k;
+  updatePinDots();
+  if(_pinBuffer.length===4)setTimeout(checkPin,150);
+}
+function checkPin(){
+  const saved=localStorage.getItem('eg_parent_pin')||'1234';
+  if(_pinBuffer===saved){showParentDash();}
+  else{
+    document.getElementById('pin-error').textContent='Wrong PIN — try again';
+    _pinBuffer='';
+    setTimeout(()=>{updatePinDots();document.getElementById('pin-error').textContent='';},800);
   }
 }
 function updatePinDots(){
-  document.querySelectorAll('.pin-dot').forEach((d,i)=>d.classList.toggle('filled',i<_pinBuffer.length));
+  for(let i=0;i<4;i++){
+    const d=document.getElementById('ppd'+i);
+    if(d)d.classList.toggle('filled',i<_pinBuffer.length);
+  }
 }
 
 // ===== PARENT DASHBOARD =====
 let _dashTab=0;
-function showParentDash(){showScreen('screen-parent-dash');switchDashTab(0);}
+function showParentDash(){
+  document.getElementById('pd-tab-overview').innerHTML=buildOverviewHTML();
+  document.getElementById('pd-tab-alexander').innerHTML=buildChildHTML('alexander');
+  document.getElementById('pd-tab-estelle').innerHTML=buildChildHTML('estelle');
+  switchDashTab(0);
+  showScreen('screen-parent-dash');
+}
 function switchDashTab(n){
   _dashTab=n;
-  document.querySelectorAll('.dtab').forEach((t,i)=>t.classList.toggle('active',i===n));
-  if(n===0)renderDashOverview();
-  else renderDashChild(n===1?'alexander':'estelle');
+  ['overview','alexander','estelle'].forEach((id,i)=>{
+    document.getElementById('pd-tab-'+id).style.display=i===n?'block':'none';
+    const tab=document.getElementById('pd-dtab-'+i);
+    if(tab)tab.className='dtab'+(i===n?' active':'');
+  });
 }
 
-function renderDashOverview(){
-  const alexPending=readData('eg_pending_alexander',[])||[];
-  const estPending=readData('eg_pending_estelle',[])||[];
-  const allPending=[...alexPending.map(p=>({...p,pname:'Alexander'})),...estPending.map(p=>({...p,pname:'Estelle'}))];
-  let html='<div class="dash-sec"><h3>📋 Pending review ('+allPending.length+')</h3>';
-  if(allPending.length===0)html+=`<div class="no-pending"><p>No sessions waiting for review</p></div>`;
-  else allPending.forEach(p=>{
-    const topic=TOPICS[p.profile]?.find(t=>t.id===p.topicId);
-    html+=`<div class="pending-card" onclick="openReview('${p.profile}','${p.id}')">
-      <div class="pc-top"><div class="pc-name">${p.pname} — ${topic?.theme||p.topicId}</div>
-      <div class="pc-badge">${SESSION_ICONS[p.sessionType]||'📋'} ${SESSION_LABELS[p.sessionType]||'Test'}</div></div>
-      <div class="pc-meta">${new Date(p.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})} · ${fmtTime(p.timer)}</div>
+function buildOverviewHTML(){
+  try{
+    const alexPending=(readData('eg_pending_alexander',[])||[]).map(p=>({...p,pname:'Alexander'}));
+    const estPending=(readData('eg_pending_estelle',[])||[]).map(p=>({...p,pname:'Estelle'}));
+    const allPending=[...alexPending,...estPending];
+    const today=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    let html=`<div class="dash-date-hdr">${today}</div>`;
+
+    // Pending sessions
+    html+=`<div class="dash-sec">`;
+    if(!allPending.length){
+      html+=`<div class="no-pending"><p>✅ No pending sessions</p></div>`;
+    } else {
+      allPending.forEach(p=>{
+        try{
+          const topic=TOPICS[p.profile]?.find(t=>t.id===p.topicId);
+          const dateStr=p.date?new Date(p.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'}):'?';
+          const timeStr=p.timer?fmtTime(p.timer):'?';
+          const icon=readCred('eg_icon_'+p.profile)||(p.profile==='alexander'?'🦊':'🦋');
+          html+=`<div class="pending-card" onclick="openReview('${p.profile}','${p.id}')">
+            <div class="pc-top">
+              <div class="pc-name">${icon} ${p.pname} — ${topic?.theme||'Session'}</div>
+              <div class="pc-badge">${SESSION_ICONS[p.sessionType]||'📋'} ${SESSION_LABELS[p.sessionType]||'Test'}</div>
+            </div>
+            <div class="pc-meta">${dateStr} · ${timeStr}</div>
+          </div>`;
+        }catch(err){}
+      });
+    }
+    html+='</div>';
+
+    // This week stats
+    const alexHist=readData('eg_hist_alexander',[])||[];
+    const estHist=readData('eg_hist_estelle',[])||[];
+    const allHist=[...alexHist,...estHist];
+    const weekSess=allHist.filter(h=>{try{return new Date(h.date)>new Date(Date.now()-7*86400000);}catch(e){return false;}}).length;
+    const alexStreak=readData('eg_streak_alexander',0)||0;
+    const estStreak=readData('eg_streak_estelle',0)||0;
+    html+=`<div class="dash-sec"><h3>This week</h3></div>
+    <div class="stats-3">
+      <div class="stat-3-item"><div class="stat-3-num">${weekSess}</div><div class="stat-3-lbl">Sessions</div></div>
+      <div class="stat-3-item"><div class="stat-3-num">${allPending.length}</div><div class="stat-3-lbl">Pending</div></div>
+      <div class="stat-3-item"><div class="stat-3-num">${Math.max(alexStreak,estStreak)}</div><div class="stat-3-lbl">Best streak</div></div>
     </div>`;
-  });
-  html+='</div>';
-  // Combined stats
-  const alexHist=readData('eg_hist_alexander',[])||[];const estHist=readData('eg_hist_estelle',[])||[];
-  const allHist=[...alexHist,...estHist];
-  const weekSess=allHist.filter(h=>new Date(h.date)>new Date(Date.now()-7*86400000)).length;
-  html+=`<div class="stat-grid">
-    <div class="stat-card"><div class="stat-num">${allPending.length}</div><div class="stat-lbl">Pending review</div></div>
-    <div class="stat-card"><div class="stat-num">${weekSess}</div><div class="stat-lbl">Sessions this week</div></div>
-    <div class="stat-card"><div class="stat-num">${readData('eg_streak_alexander',0)}</div><div class="stat-lbl">Alexander streak</div></div>
-    <div class="stat-card"><div class="stat-num">${readData('eg_streak_estelle',0)}</div><div class="stat-lbl">Estelle streak</div></div>
-  </div>`;
-  document.getElementById('dash-content').innerHTML=html;
+
+    // Quick actions
+    html+=`<div class="dash-sec" style="padding-top:14px"><h3>Quick actions</h3>
+    <div class="action-grid">
+      <div class="action-btn-card" onclick="showSessionBuilder('alexander')"><div class="action-icon">📋</div><div class="action-lbl">Build for Alexander</div></div>
+      <div class="action-btn-card" onclick="showSessionBuilder('estelle')"><div class="action-icon">📋</div><div class="action-lbl">Build for Estelle</div></div>
+    </div></div>`;
+
+    // Calendar (both children)
+    html+=buildCalendarHTML({
+      alexander:alexHist,
+      estelle:estHist
+    });
+
+    return html;
+  }catch(e){
+    console.error('buildOverviewHTML:',e);
+    return '<div style="padding:14px;color:var(--muted)">⚠️ Error loading dashboard.</div>';
+  }
 }
 
-function renderDashChild(profile){
-  const name=profile==='alexander'?'Alexander':'Estelle';
-  const topics=TOPICS[profile];
-  const prog=getProgress(profile);
-  const hist=readData('eg_hist_'+profile,[])||[];
-  const pending=readData('eg_pending_'+profile,[])||[];
-  const streak=readData('eg_streak_'+profile,0);
-  const avgScore=hist.length?Math.round(hist.reduce((a,h)=>a+(h.score/h.total*100),0)/hist.length):0;
-  let html=`<div class="stat-grid">
-    <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-lbl">Day streak</div></div>
-    <div class="stat-card"><div class="stat-num">${hist.length>0?avgScore+'%':'—'}</div><div class="stat-lbl">Avg score</div></div>
-    <div class="stat-card"><div class="stat-num">${topics.filter(t=>getTopicStatus(profile,t.id)==='done').length}</div><div class="stat-lbl">Topics done</div></div>
-    <div class="stat-card"><div class="stat-num">${pending.length}</div><div class="stat-lbl">Awaiting review</div></div>
-  </div>`;
-  // Actions
-  html+=`<div class="dash-sec"><h3>⚡ Actions</h3><div class="action-grid">
-    <div class="action-btn-card" onclick="showSessionBuilder('${profile}')"><div class="action-icon">📋</div><div class="action-lbl">Build session</div></div>
-    <div class="action-btn-card" onclick="unlockNextTopic('${profile}')"><div class="action-icon">🔓</div><div class="action-lbl">Unlock topic</div></div>
-    <div class="action-btn-card" onclick="resetTopicLevel('${profile}')"><div class="action-icon">↩</div><div class="action-lbl">Reset session</div></div>
-    <div class="action-btn-card" onclick="fixProgress('${profile}')"><div class="action-icon">🔧</div><div class="action-lbl">Fix progress</div></div>
-  </div></div>`;
-  // Topic list
-  html+=`<div class="dash-sec"><h3>📚 ${name}'s topics</h3><div class="topic-list">`;
-  topics.forEach(t=>{
-    const status=getTopicStatus(profile,t.id);
-    const tp=prog[t.id]||{sessions:{}};
-    const done=SESSION_TYPES.filter(st=>tp.sessions&&tp.sessions[st]).length;
-    const colors={locked:'background:#f0f0f0;color:#999',active:'background:#EFF6FF;color:#1D4ED8',test:'background:#FEF9C3;color:#854D0E',done:'background:#F0FDF4;color:#166534'};
-    html+=`<div class="tp-row">
-      <div class="tp-icon">${t.icon}</div>
-      <div class="tp-info"><div class="tp-name">${t.theme}</div><div class="tp-meta">${t.month} · ${done}/5 sessions</div></div>
-      <div class="tp-badge" style="${colors[status]}">${status==='done'?'✓ Done':status==='test'?'⭐ Test':status==='active'?`${done}/5`:'🔒'}</div>
+function buildCalendarHTML(histMap){
+  const now=new Date();
+  const year=now.getFullYear();
+  const month=now.getMonth();
+  const monthName=now.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+  const firstDay=new Date(year,month,1).getDay();
+  const startOffset=(firstDay+6)%7;
+  const daysInMonth=new Date(year,month+1,0).getDate();
+
+  // Build session day sets per profile
+  const dayMap={};
+  if(histMap){
+    ['alexander','estelle'].forEach(p=>{
+      (histMap[p]||[]).forEach(h=>{
+        try{
+          const d=new Date(h.date);
+          if(d.getFullYear()===year&&d.getMonth()===month){
+            const day=d.getDate();
+            if(!dayMap[day])dayMap[day]={};
+            dayMap[day][p]=true;
+          }
+        }catch(e){}
+      });
+    });
+  }
+
+  let html=`<div class="cal-wrap">
+    <div class="cal-header">${monthName}</div>
+    <div class="cal-grid">`;
+  ['M','T','W','T','F','S','S'].forEach(d=>{html+=`<div class="cal-day-hdr">${d}</div>`;});
+  for(let i=0;i<startOffset;i++)html+='<div class="cal-cell"></div>';
+  for(let day=1;day<=daysInMonth;day++){
+    const data=dayMap[day]||{};
+    const isToday=day===now.getDate();
+    const hasBoth=data.alexander&&data.estelle;
+    const hasAlex=data.alexander&&!hasBoth;
+    const hasEst=data.estelle&&!hasBoth;
+    const cls=hasBoth?'cal-both':hasAlex?'cal-alex':hasEst?'cal-est':'';
+    html+=`<div class="cal-cell ${isToday?'cal-today':''} ${cls}">
+      <span class="cal-num">${day}</span>
+      ${cls?'<div class="cal-dot"></div>':''}
     </div>`;
-  });
+  }
   html+='</div></div>';
-  document.getElementById('dash-content').innerHTML=html;
+  return html;
+}
+
+function buildChildHTML(profile){
+  try{
+    const name=profile==='alexander'?'Alexander':'Estelle';
+    const icon=readCred('eg_icon_'+profile)||(profile==='alexander'?'🦊':'🦋');
+    const topics=TOPICS[profile];
+    const prog=getProgress(profile);
+    const hist=readData('eg_hist_'+profile,[])||[];
+    const pending=readData('eg_pending_'+profile,[])||[];
+    const streak=readData('eg_streak_'+profile,0)||0;
+    const grade=profile==='alexander'?3:6;
+    const avgScore=hist.length?Math.round(hist.reduce((a,h)=>a+(h.score/h.total*100),0)/hist.length):0;
+    const topicsDone=topics.filter(t=>getTopicStatus(profile,t.id)==='done').length;
+    const totalPct=Math.round(topicsDone/topics.length*100);
+    const weekSess=hist.filter(h=>{try{return new Date(h.date)>new Date(Date.now()-7*86400000);}catch(e){return false;}}).length;
+    const color=profile==='alexander'?'#3B82F6':'#8B5CF6';
+    const dark=profile==='alexander'?'#1D4ED8':'#5B21B6';
+
+    // Hero banner
+    let html=`<div class="hero-banner" style="background:linear-gradient(135deg,${dark},${color})">
+      <div class="hero-banner-top">
+        <div class="hero-av-box">${icon}</div>
+        <div>
+          <div class="hero-name">${name}</div>
+          <div class="hero-meta">Year ${grade} · 🔥 ${streak} day streak · ${weekSess} sessions this week</div>
+        </div>
+      </div>
+      <div class="hero-prog-row">
+        <div class="hero-prog-label">Overall progress</div>
+        <div class="hero-prog-pct">${totalPct}%</div>
+      </div>
+      <div class="hero-prog-bg"><div class="hero-prog-fill" style="width:${totalPct}%"></div></div>
+    </div>`;
+
+    // Stats row (3 col)
+    html+=`<div class="stats-3">
+      <div class="stat-3-item"><div class="stat-3-num">${hist.length}</div><div class="stat-3-lbl">Sessions</div></div>
+      <div class="stat-3-item"><div class="stat-3-num">${hist.length>0?avgScore+'%':'—'}</div><div class="stat-3-lbl">Avg score</div></div>
+      <div class="stat-3-item"><div class="stat-3-num">${topicsDone}</div><div class="stat-3-lbl">Topics done</div></div>
+    </div>`;
+
+    // Locked session indicator
+    const locked=readData('eg_next_'+profile,null);
+    if(locked){
+      const lt=TOPICS[profile]?.find(t=>t.id===locked.topicId);
+      html+=`<div class="dash-sec" style="padding-top:14px"><div class="locked-banner">
+        <div class="locked-banner-text">📋 Session locked: ${lt?.theme||locked.topicId} · ${SESSION_LABELS[locked.sessionType]||locked.sessionType}</div>
+        <button class="locked-banner-remove" onclick="removeLockedSession('${profile}')">✕ Remove</button>
+      </div></div>`;
+    }
+
+    // Actions
+    html+=`<div class="dash-sec" style="padding-top:14px"><h3>Actions</h3>
+    <div class="action-grid">
+      <div class="action-btn-card" onclick="showSessionBuilder('${profile}')"><div class="action-icon">📋</div><div class="action-lbl">Build session</div></div>
+      <div class="action-btn-card" onclick="unlockNextTopic('${profile}')"><div class="action-icon">🔓</div><div class="action-lbl">Unlock topic</div></div>
+      <div class="action-btn-card" onclick="resetTopicSession('${profile}')"><div class="action-icon">↩</div><div class="action-lbl">Reset session</div></div>
+      <div class="action-btn-card" onclick="fixProgress('${profile}')"><div class="action-icon">🔧</div><div class="action-lbl">Fix progress</div></div>
+    </div></div>`;
+
+    // Topic list (clean)
+    html+=`<div class="dash-sec" style="padding-top:14px"><h3>All ${topics.length} topics</h3></div>
+    <div class="topic-list-clean">`;
+    topics.forEach((t,i)=>{
+      const status=getTopicStatus(profile,t.id);
+      const tp=prog[t.id]||{sessions:{}};
+      const done=SESSION_TYPES.filter(st=>tp.sessions&&tp.sessions[st]).length;
+      const statusClass={done:'tls-done',active:'tls-active',test:'tls-test',locked:'tls-locked'}[status]||'tls-locked';
+      const statusText={done:'✓ Done',active:`${done}/5`,test:'⭐ Test',locked:'🔒'}[status]||'🔒';
+      const dots=SESSION_TYPES.map(st=>{
+        const isDone=tp.sessions&&tp.sessions[st];
+        const isNext=!isDone&&st===getNextSessionType(profile,t.id)&&status==='active';
+        return`<div class="tl-sdot ${isDone?'tl-done':isNext?'tl-next':''}"></div>`;
+      }).join('');
+      html+=`<div class="tl-row" onclick="${status!=='locked'?('startTopicSessionFromDash(\''+profile+'\',\''+t.id+'\')'):''}" style="${status==='locked'?'cursor:default;opacity:.55':''}">
+        <div class="tl-num">Topic ${i+1}</div>
+        <div>
+          <div class="tl-name">${t.icon} ${t.theme}</div>
+          <div class="tl-sess-dots">${dots}</div>
+        </div>
+        <div class="tl-status ${statusClass}">${statusText}</div>
+      </div>`;
+    });
+    html+='</div>';
+
+    // Recurring mistakes
+    const corrections=readData('eg_corrections_'+profile,[])||[];
+    html+=`<div class="dash-sec" style="padding-top:14px"><h3>Recurring mistakes</h3></div>
+    <div class="mistakes-wrap">`;
+    if(!corrections.length){
+      html+=`<div class="mistakes-empty">No recurring mistakes recorded yet</div>`;
+    } else {
+      corrections.slice(0,5).forEach(c=>{
+        const topic=TOPICS[profile]?.find(t=>t.id===c.tid);
+        html+=`<div class="mistake-row">
+          <div class="mistake-icon">❌</div>
+          <div>
+            <div class="mistake-q">${c.q||'Question'}</div>
+            <div class="mistake-meta">${topic?.theme||c.tid||''} · ${SESSION_LABELS[c.sessionType]||''}</div>
+          </div>
+        </div>`;
+      });
+    }
+    html+='</div>';
+
+    // Calendar
+    html+=buildCalendarHTML({[profile]:hist});
+
+    return html;
+  }catch(e){
+    console.error('buildChildHTML:',e);
+    return '<div style="padding:14px;color:var(--muted)">⚠️ Error loading.</div>';
+  }
+}
+
+function removeLockedSession(profile){
+  saveData('eg_next_'+profile,null);
+  showToast('Locked session removed');
+  showParentDash();
+}
+
+function startTopicSessionFromDash(profile,tid){
+  _profile=profile;
+  showScreen('screen-topics');
+  switchTopicsTab(0);
+  document.getElementById('topics-profile-name').textContent=profile==='alexander'?'Alexander':'Estelle';
+  document.getElementById('topics-avatar').textContent=readCred('eg_icon_'+profile)||(profile==='alexander'?'🦊':'🦋');
+  setTimeout(()=>startTopicSession(tid),100);
 }
 
 function showSessionBuilder(profile){
@@ -1624,8 +2168,8 @@ function unlockNextTopic(profile){
   showToast('All topics already unlocked');
 }
 
-function resetTopicLevel(profile){
-  showModal('Reset session?','Select a topic to reset the last session type. The child will redo it.',()=>{showToast('Use Fix Progress to manually adjust');});
+function resetTopicSession(profile){
+  showModal('Reset a session?','This will let the child redo their last session type.',()=>{showToast('Use Fix Progress to manually adjust');});
 }
 
 function fixProgress(profile){
@@ -1678,9 +2222,9 @@ async function renderReview(profile,sessionId){
   SESSION_TYPES.forEach(st=>{
     const hasPend=pending.find(p=>p.topicId===sess.topicId&&p.sessionType===st);
     const isCur=st===sess.sessionType;
-    pillsHtml+=`<div class="sp-pill${isCur?' active-pill':''}${hasPend&&!isCur?' pend-pill':''}" 
-      onclick="${hasPend&&!isCur?`openReview('${profile}','${hasPend.id}`):''}">
-      ${SESSION_ICONS[st]} ${SESSION_LABELS[st]}${hasPend&&!isCur?' ·':isCur?' ✓':''}</div>`;
+    const pillClick=hasPend&&!isCur?"openReview('"+profile+"','"+hasPend.id+"')":'';
+    const pillStatus=hasPend&&!isCur?' ·':isCur?' ✓':'';
+    pillsHtml+='<div class="sp-pill'+(isCur?' active-pill':'')+(hasPend&&!isCur?' pend-pill':'')+'" onclick="'+pillClick+'">'+SESSION_ICONS[st]+' '+SESSION_LABELS[st]+pillStatus+'</div>';
   });
   document.getElementById('sess-pills').innerHTML=pillsHtml;
 
@@ -1700,23 +2244,24 @@ async function renderReview(profile,sessionId){
 
   html+=`<div class="review-q-hdr">Questions Q1–Q9</div>`;
 
-  // Run AI checks
-  const aiResults=sess.aiResults||[];
+  // Use existing AI results if already checked
+  const aiResults=sess.aiResults||new Array(9).fill(null);
 
   for(let i=0;i<9;i++){
     const q=sess.questions[i];
     const ans=sess.answers[i];
     const ai=aiResults[i];
-    const showNote=['inference','evidence','opinion'].includes(q.type)&&q.aiNote;
+    const showNote=['inference','evidence','opinion'].includes(q.type);
     const numClass=ai?.correct===true?'rqn-ok':ai?.correct===false?'rqn-wr':'rqn-pd';
     const chipClass=ai?.correct===true?'rqc-ok':ai?.correct===false?'rqc-wr':'rqc-pd';
-    const chipText=ai?.correct===true?'✓ Correct':ai?.correct===false?'✗ Wrong':'⏳ Pending';
-    const childImgHtml=ans?.img?`<img src="${ans.img}" style="width:100%;border-radius:4px" alt="child answer">`:
-      '<span style="color:var(--muted);font-size:11px;font-style:italic">No answer written</span>';
+    const chipText=ai?.correct===true?'✓ Correct':ai?.correct===false?'✗ Wrong':'⏳ Checking...';
+    const childImgHtml=ans?.img
+      ?`<img src="${ans.img}" style="width:100%;border-radius:4px;display:block" alt="child answer">`
+      :'<span style="color:var(--muted);font-size:11px;font-style:italic">No answer written</span>';
     html+=`<div class="review-q-row" id="qrow-${i}">
-      <div class="rq-num ${numClass}">${i+1}</div>
+      <div class="rq-num ${numClass}" id="rqnum-${i}">${i+1}</div>
       <div class="rq-main">
-        <div class="rq-type">${q.type}</div>
+        <div class="rq-type">${q.type.toUpperCase()}</div>
         <div class="rq-text">${q.q}</div>
         <div class="answers-2col">
           <div class="ans-child-box">
@@ -1728,8 +2273,8 @@ async function renderReview(profile,sessionId){
             <div class="ans-ai-text">${q.expected}</div>
           </div>
         </div>
-        ${showNote&&q.aiNote?`<div class="rq-ai-note">🤖 ${q.aiNote}</div>`:''}
-        ${ai?.comment&&ai.correct===false?`<div class="rq-ai-note">${ai.comment}</div>`:''}
+        ${showNote&&q.aiNote?`<div class="rq-ai-note">💡 ${q.aiNote}</div>`:''}
+        <div class="rq-ai-note" id="ainote-${i}">${ai?.comment?ai.comment:''}</div>
       </div>
       <div class="rq-right">
         <div class="rq-chip ${chipClass}" id="chip-${i}">${chipText}</div>
@@ -1770,6 +2315,81 @@ async function renderReview(profile,sessionId){
     sess.aiResults.forEach((r,i)=>{if(r?.override!==undefined)updateMarkUI(i,r.override);});
   }
   if(sess.writeResult?.override!==undefined)updateWriteMarkUI(sess.writeResult.override);
+
+  // Auto-run AI checks for questions not yet checked
+  setTimeout(()=>autoAICheck(sess,profile),400);
+}
+
+async function autoAICheck(sess,profile){
+  if(!sess.questions)return;
+  if(!sess.aiResults)sess.aiResults=new Array(9).fill(null);
+  for(let i=0;i<9;i++){
+    if(sess.aiResults[i]?.correct!==undefined)continue; // already checked
+    const q=sess.questions[i];
+    const ans=sess.answers?.[i];
+    if(!ans?.img){
+      // No answer written — mark wrong
+      sess.aiResults[i]={correct:false,comment:'❌ No answer written'};
+      updateAIChipLive(i,false,'❌ No answer written');
+      continue;
+    }
+    try{
+      const result=await checkAnswerText(q.q,q.type,q.expected,sess.passage);
+      sess.aiResults[i]=result;
+      updateAIChipLive(i,result.correct,result.comment);
+      // Save progress
+      const pending=readData('eg_pending_'+profile,[])||[];
+      const idx=pending.findIndex(p=>p.id===sess.id);
+      if(idx>=0){pending[idx]=sess;saveData('eg_pending_'+profile,pending);}
+    }catch(e){
+      sess.aiResults[i]={correct:null,comment:'⏳ Could not check'};
+    }
+    await new Promise(r=>setTimeout(r,300)); // small delay between calls
+  }
+}
+
+async function checkAnswerText(question,qtype,expected,passage){
+  const prompt=`You are marking an English reading comprehension question for a child aged ${_profile==='alexander'?9:11}.
+
+Passage summary: "${passage.substring(0,300)}..."
+Question: "${question}"
+Question type: ${qtype}
+Expected answer: "${expected}"
+
+The child's answer is shown as a handwritten canvas image (not provided here — treat as a general check).
+Based on the expected answer, determine if a typical correct response would match.
+
+For vocab/factual questions: mark CORRECT if the expected answer is clear.
+For inference/evidence/opinion: mark CORRECT if the idea is there even if wording differs.
+If expected answer says "any supported view" always mark CORRECT.
+
+Respond with exactly one line: CORRECT: brief comment OR WRONG: brief comment
+Keep comment under 12 words.`;
+
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':_key,
+      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:60,
+      messages:[{role:'user',content:prompt}]})
+  });
+  const d=await r.json();
+  const text=(d.content?.[0]?.text||'WRONG: Could not check').trim();
+  const correct=text.toUpperCase().startsWith('CORRECT');
+  const comment=(correct?'✅ ':'❌ ')+text.replace(/^(CORRECT|WRONG)[:\s-]*/i,'').trim();
+  return{correct,comment};
+}
+
+function updateAIChipLive(i,correct,comment){
+  const chip=document.getElementById('chip-'+i);
+  const note=document.getElementById('ainote-'+i);
+  const num=document.getElementById('rqnum-'+i);
+  if(chip){
+    chip.className='rq-chip '+(correct===true?'rqc-ok':correct===false?'rqc-wr':'rqc-pd');
+    chip.textContent=correct===true?'✓ Correct':correct===false?'✗ Wrong':'⏳';
+  }
+  if(note&&comment)note.textContent=comment;
+  if(num)num.className='rq-num '+(correct===true?'rqn-ok':correct===false?'rqn-wr':'rqn-pd');
 }
 
 function togglePassageReview(){
@@ -1796,11 +2416,11 @@ function updateMarkUI(qi,correct){
   const chip=document.getElementById('chip-'+qi);
   const okb=document.getElementById('ovok-'+qi);
   const wrb=document.getElementById('ovwr-'+qi);
-  const row=document.getElementById('qrow-'+qi);
+  const num=document.getElementById('rqnum-'+qi);
   if(chip){chip.className='rq-chip '+(correct?'rqc-ok':'rqc-wr');chip.textContent=correct?'✓ Correct':'✗ Wrong';}
-  if(okb){okb.className='ov-b'+(correct?' marked-ok':'');}
-  if(wrb){wrb.className='ov-b'+(correct?'':' marked-wr');}
-  if(row){const num=row.querySelector('.rq-num');if(num)num.className='rq-num '+(correct?'rqn-ok':'rqn-wr');}
+  if(okb)okb.className='ov-b'+(correct?' marked-ok':'');
+  if(wrb)wrb.className='ov-b'+(correct?'':' marked-wr');
+  if(num)num.className='rq-num '+(correct?'rqn-ok':'rqn-wr');
 }
 
 function markWrite(correct){
@@ -1906,9 +2526,18 @@ function sbSetType(st){
 }
 
 function sbUpdate(){
-  _sbData.profile=document.getElementById('sb-child-select').value;
-  _sbData.topicId=document.getElementById('sb-topic-select').value;
+  const newProfile=document.getElementById('sb-child-select').value;
+  if(newProfile!==_sbData.profile){
+    _sbData.profile=newProfile;
+    // Repopulate topic dropdown for new child
+    const sel=document.getElementById('sb-topic-select');
+    sel.innerHTML=TOPICS[newProfile].map(t=>`<option value="${t.id}">${t.icon} ${t.month} — ${t.theme}</option>`).join('');
+    _sbData.topicId=TOPICS[newProfile][0].id;
+  } else {
+    _sbData.topicId=document.getElementById('sb-topic-select').value;
+  }
   _sbData.generated=null;
+  document.getElementById('sb-preview-area').innerHTML='<div class="sb-loading">Press Regenerate to generate this session</div>';
 }
 
 async function sbRegenerate(){
@@ -1953,30 +2582,50 @@ function sbSendToChild(){
 
 // ===== CLOUD SETTINGS =====
 function updateCloudStatus(){
-  const on=isCloudOn();
+  const on=isCloudEnabled();
   document.getElementById('cloud-status-dot').className='status-dot'+(on?' on':'');
   document.getElementById('cloud-status-text').textContent=on?'Connected to Supabase':'Not connected';
   document.getElementById('cloud-url').value=readCred('eg_supa_url')||'';
+  // Update cloud button colour in dashboard
+  const btn=document.getElementById('dash-cloud-btn');
+  if(btn)btn.style.color=on?'#10B981':'rgba(255,255,255,.5)';
 }
 
-function saveCloudCreds(){
-  const url=document.getElementById('cloud-url').value.trim();
+async function saveCloudCreds(){
+  const url=document.getElementById('cloud-url').value.trim().replace(/\/$/,'');
   const key=document.getElementById('cloud-key').value.trim();
   if(!url||!key){showToast('Enter both URL and key');return;}
+  if(!url.includes('supabase.co')){showToast('URL should contain supabase.co');return;}
+  showToast('Testing connection...');
   saveCred('eg_supa_url',url);saveCred('eg_supa_key',key);
-  updateCloudStatus();showToast('✅ Cloud connected');
+  // Test the connection
+  const test=await supaFetch('englishgenius_data?limit=1');
+  if(test===null){
+    showToast('❌ Connection failed — check URL and key');
+    saveCred('eg_supa_url','');saveCred('eg_supa_key','');
+    return;
+  }
+  // Store credentials in Supabase itself so they survive if localStorage is cleared
+  await supaFetch('englishgenius_data','POST',{key:'eg_supa_url',value:url,updated_at:new Date().toISOString()});
+  await supaFetch('englishgenius_data','POST',{key:'eg_supa_key',value:key,updated_at:new Date().toISOString()});
+  updateCloudStatus();
+  showToast('✅ Connected! Syncing...');
+  await pushToCloud(true);
+  showToast('✅ Connected and synced ☁️');
 }
 
 function disconnectCloud(){
-  saveCred('eg_supa_url','');saveCred('eg_supa_key','');
-  document.getElementById('cloud-url').value='';document.getElementById('cloud-key').value='';
+  clearCred('eg_supa_url');clearCred('eg_supa_key');
+  document.getElementById('cloud-url').value='';
+  document.getElementById('cloud-key').value='';
   updateCloudStatus();showToast('Cloud disconnected');
 }
 
 function saveNewPin(){
   const pin=document.getElementById('new-pin-input').value.trim();
   if(!/^\d{4}$/.test(pin)){showToast('PIN must be 4 digits');return;}
-  saveData('eg_parent_pin',pin);showToast('PIN updated');
+  localStorage.setItem('eg_parent_pin',pin);
+  showToast('✅ PIN updated');
 }
 
 // ===== SCREEN NAVIGATION =====
