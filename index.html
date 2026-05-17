@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{background:#F4F1EC}
 html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background:#F4F1EC;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 :root{
   --navy:#1E3A8A;--navydark:#152a68;--gold:#FCD34D;--goldark:#f0c030;
@@ -688,6 +689,12 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
       </div>
     </div>
     <div class="cloud-card">
+      <h3>Anthropic API Key</h3>
+      <input id="api-key-settings" class="inp" type="password" placeholder="sk-ant-...">
+      <div style="font-size:11px;color:var(--muted);margin-top:4px;margin-bottom:8px">Get your key at console.anthropic.com → API Keys</div>
+      <button class="btn btn-primary" onclick="saveApiKeyFromSettings()">Update API Key</button>
+    </div>
+    <div class="cloud-card">
       <h3>Change parent PIN</h3>
       <input id="new-pin-input" class="inp" type="number" placeholder="New 4-digit PIN" maxlength="4">
       <button class="btn btn-secondary" style="margin-top:4px" onclick="saveNewPin()">Save PIN</button>
@@ -1270,8 +1277,12 @@ async function generateAndRunSession(){
     startTimer();
     renderPhase1();
   }catch(e){
+    console.error('genSession error:',e);
     document.getElementById('sess-body').innerHTML=`<div class="gen-box">
-      <div class="gen-text" style="color:var(--red)">⚠️ Failed to generate session. Check your API key and try again.</div>
+      <div class="gen-text" style="color:var(--red);margin-bottom:12px">⚠️ ${e.message||'Failed to generate session'}</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px">Check your API key in Settings, or try again.</div>
+      <button onclick="generateAndRunSession()" style="background:var(--navy);color:var(--gold);border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-right:8px">🔄 Try again</button>
+      <button onclick="goToTopics()" style="background:var(--white);color:var(--navy);border:2px solid var(--navy);border-radius:10px;padding:11px 20px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">← Back</button>
     </div>`;
   }
 }
@@ -1362,8 +1373,12 @@ Return exactly this JSON:
       messages:[{role:'user',content:prompt}]})
   });
   const d=await resp.json();
-  // Check for API errors (wrong key, rate limit, etc.)
-  if(d.error){throw new Error('API error: '+d.error.message);}
+  // Surface real API errors (wrong key, rate limit, etc.)
+  if(d.error){
+    const msg=d.error.message||d.error.type||'API error';
+    throw new Error(msg);
+  }
+  if(!resp.ok){throw new Error('HTTP '+resp.status+' — check API key');}
   let text=d.content?.[0]?.text||'{}';
   text=text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
   // Find the JSON object even if Claude added text around it
@@ -2610,9 +2625,11 @@ function updateCloudStatus(){
   document.getElementById('cloud-status-dot').className='status-dot'+(on?' on':'');
   document.getElementById('cloud-status-text').textContent=on?'Connected to Supabase':'Not connected';
   document.getElementById('cloud-url').value=readCred('eg_supa_url')||'';
-  // Update cloud button colour in dashboard
   const btn=document.getElementById('dash-cloud-btn');
   if(btn)btn.style.color=on?'#10B981':'rgba(255,255,255,.5)';
+  const hasKey=!!readCred('eg_apikey');
+  const keyField=document.getElementById('api-key-settings');
+  if(keyField)keyField.placeholder=hasKey?'✅ Key saved — paste new key to update':'sk-ant-...';
 }
 
 async function saveCloudCreds(){
@@ -2643,6 +2660,14 @@ function disconnectCloud(){
   document.getElementById('cloud-url').value='';
   document.getElementById('cloud-key').value='';
   updateCloudStatus();showToast('Cloud disconnected');
+}
+
+function saveApiKeyFromSettings(){
+  const k=document.getElementById('api-key-settings').value.trim();
+  if(!k||!k.startsWith('sk-ant-')){showToast('Enter a valid sk-ant-... key');return;}
+  saveCred('eg_apikey',k);_key=k;
+  document.getElementById('api-key-settings').value='';
+  showToast('✅ API key updated');
 }
 
 function saveNewPin(){
