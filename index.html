@@ -230,7 +230,41 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
 .streak-badge.waiting{background:#f0f0f0;color:var(--muted);font-size:14px}
 .home-btn{background:var(--navy);color:var(--gold);border:none;border-radius:14px;padding:15px 36px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
 
-/* ===== PARENT PIN ===== */
+/* ===== CHILD PIN SCREEN ===== */
+.child-pin-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 24px;min-height:100%;background:var(--bg)}
+.child-pin-dots{display:flex;gap:14px;justify-content:center;margin-bottom:8px}
+.cp-dot{width:16px;height:16px;border-radius:50%;border:2.5px solid var(--border);background:#fff;transition:all .15s}
+.cp-dot.filled{background:var(--navy);border-color:var(--navy)}
+@keyframes cp-shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.cp-shake{animation:cp-shake .4s ease}
+.cp-dot.wrong{background:#E24B4A;border-color:#E24B4A}
+
+/* ===== ESTELLE PURPLE THEME ===== */
+body.estelle-theme{--active-color:#6D28D9}
+.estelle-theme .nav-hdr{background:#6D28D9}
+.estelle-theme .sess-hdr{background:#6D28D9}
+.estelle-theme .dash-tabs{background:#6D28D9}
+.estelle-theme .send-bar{background:#6D28D9}
+.estelle-theme .done-reading-btn{background:#6D28D9}
+.estelle-theme .next-btn{background:#6D28D9}
+.estelle-theme .nav-back{color:rgba(255,255,255,.7)}
+.estelle-theme .sess-type-badge.stb-factual{background:#EDE9FE;color:#5B21B6}
+.estelle-theme .ttab.active{border-color:#FCD34D}
+.estelle-theme .dtab.active{border-color:#FCD34D}
+.estelle-theme #screen-topics{background:#FAF5FF}
+.estelle-theme .topics-tabs{background:#6D28D9}
+.estelle-theme .done-reading-btn{background:#6D28D9}
+.estelle-theme .done-btn{background:#6D28D9}
+.estelle-theme .sb-send-btn{background:#6D28D9}
+.estelle-theme .streak-badge:not(.waiting){background:#DDD6FE;color:#4C1D95}
+.estelle-theme .comp-btn,.estelle-theme button.comp-btn{background:#6D28D9}
+.estelle-theme .cp-dot.filled{background:#6D28D9;border-color:#6D28D9}
+.estelle-theme .btn-primary{background:#6D28D9}
+
+/* ===== FIX PIN KEYPAD (was white-on-white) ===== */
+.pin-key{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-size:18px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--text);-webkit-tap-highlight-color:transparent;user-select:none;text-align:center}
+.pin-key:active{background:var(--bg);transform:scale(.97)}
+.pin-key-action{color:var(--muted)!important}
 #screen-parent-pin{flex-direction:column}
 .pin-card{background:var(--white);border-radius:18px;padding:24px 20px;width:100%;max-width:300px;text-align:center;border:1.5px solid var(--border)}
 .pin-title{font-size:18px;font-weight:900;color:var(--navy);margin-bottom:5px}
@@ -497,9 +531,8 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
   </div>
   <div class="profile-cards">
     <div class="profile-card alex" onclick="selectProfile('alexander')">
-      <div class="p-avatar-wrap" onclick="event.stopPropagation();openIconPicker('alexander')">
+      <div class="p-avatar-wrap">
         <div class="p-avatar" id="alex-avatar">🦊</div>
-        <div class="p-avatar-edit">✏️</div>
       </div>
       <div class="p-name">Alexander</div>
       <div class="p-grade">Age 9 · Year 3</div>
@@ -507,9 +540,8 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
       <div class="p-topic-tag" id="alex-topic">Science & Experiments</div>
     </div>
     <div class="profile-card est" onclick="selectProfile('estelle')">
-      <div class="p-avatar-wrap" onclick="event.stopPropagation();openIconPicker('estelle')">
+      <div class="p-avatar-wrap">
         <div class="p-avatar" id="est-avatar">🦋</div>
-        <div class="p-avatar-edit">✏️</div>
       </div>
       <div class="p-name">Estelle</div>
       <div class="p-grade">Age 11 · Year 6</div>
@@ -517,7 +549,6 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
       <div class="p-topic-tag" id="est-topic">Science & Discovery</div>
     </div>
   </div>
-  <div id="icon-picker-panel" class="icon-picker" style="max-width:420px;width:100%"></div>
   <div style="height:12px"></div>
   <button class="parent-btn" onclick="showParentPin()">🔒 Parent</button>
 </div>
@@ -525,13 +556,9 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
 <!-- ===== SCREEN: TOPICS ===== -->
 <div id="screen-topics" class="screen">
   <div class="nav-hdr">
-    <button class="nav-back" onclick="showScreen('screen-profile')">‹</button>
-    <div>
-      <div class="nav-title" id="topics-profile-name">Alexander</div>
-    </div>
-    <div class="nav-right">
-      <div id="topics-avatar" style="font-size:22px;line-height:1">🦊</div>
-    </div>
+    <button class="nav-back" onclick="handleTopicsBack()">‹</button>
+    <div class="nav-title" id="topics-profile-name">Alexander</div>
+    <div id="topics-avatar" style="font-size:22px;line-height:1;cursor:pointer;padding:4px" onclick="openIconPicker(_profile)" title="Tap to change icon">🦊</div>
   </div>
   <div class="topics-tabs">
     <div class="ttab active" onclick="switchTopicsTab(0)">📚 Topics</div>
@@ -583,6 +610,37 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
   <div class="complete-sub" id="complete-sub">Dad will review and approve it.</div>
   <div class="streak-badge" id="complete-streak">🔥 1 day streak</div>
   <button class="home-btn" onclick="goToTopics()">Back to topics</button>
+</div>
+
+<!-- ===== SCREEN: CHILD PIN ===== -->
+<div id="screen-child-pin" class="screen">
+  <div class="child-pin-wrap">
+    <div id="cp-avatar" style="font-size:64px;text-align:center;margin-bottom:10px">🦊</div>
+    <div id="cp-name" style="font-size:22px;font-weight:900;color:var(--navy);text-align:center;margin-bottom:4px">Alexander</div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;font-weight:600">Enter your PIN</div>
+    <div class="child-pin-dots" id="cp-dots">
+      <div class="cp-dot" id="cpd-0"></div>
+      <div class="cp-dot" id="cpd-1"></div>
+      <div class="cp-dot" id="cpd-2"></div>
+      <div class="cp-dot" id="cpd-3"></div>
+    </div>
+    <div class="pin-error" id="cp-error" style="text-align:center;min-height:20px;font-size:12px;color:var(--red);margin-bottom:8px"></div>
+    <div class="pin-keypad">
+      <div class="pin-key" onclick="cpPress('1')">1</div>
+      <div class="pin-key" onclick="cpPress('2')">2</div>
+      <div class="pin-key" onclick="cpPress('3')">3</div>
+      <div class="pin-key" onclick="cpPress('4')">4</div>
+      <div class="pin-key" onclick="cpPress('5')">5</div>
+      <div class="pin-key" onclick="cpPress('6')">6</div>
+      <div class="pin-key" onclick="cpPress('7')">7</div>
+      <div class="pin-key" onclick="cpPress('8')">8</div>
+      <div class="pin-key" onclick="cpPress('9')">9</div>
+      <div class="pin-key pin-key-action" onclick="cpPress('clear')" style="color:var(--muted);font-size:11px">C</div>
+      <div class="pin-key" onclick="cpPress('0')">0</div>
+      <div class="pin-key pin-key-action" onclick="cpPress('back')">⌫</div>
+    </div>
+    <button class="btn" style="margin-top:16px;width:100%;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer" onclick="document.body.classList.remove('estelle-theme');showScreen('screen-profile')">← Not me</button>
+  </div>
 </div>
 
 <!-- ===== SCREEN: PARENT PIN ===== -->
@@ -729,6 +787,7 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
   </div>
 </div>
 
+<div id="icon-picker-panel" class="icon-picker" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;max-width:768px;margin:0 auto"></div>
 <div class="toast" id="toast"></div>
 <div id="sync-indicator">Synced ☁️</div>
 
@@ -991,23 +1050,155 @@ document.addEventListener('visibilitychange',async()=>{
   }
 });
 
-// ===== INIT =====
+// ===== CHILD PIN SYSTEM =====
+const DEFAULT_CHILD_PINS={alexander:'1111',estelle:'2222'};
+let _cpProfile=null;
+let _cpEntry='';
+
+function getChildPin(profile){
+  return readData('eg_child_pin_'+profile,DEFAULT_CHILD_PINS[profile])||DEFAULT_CHILD_PINS[profile];
+}
+
+function selectProfile(profile){
+  _cpProfile=profile;
+  _cpEntry='';
+  // Show child PIN screen
+  document.getElementById('cp-avatar').textContent=readCred('eg_icon_'+profile)||(profile==='alexander'?'🦊':'🦋');
+  document.getElementById('cp-name').textContent=profile==='alexander'?'Alexander':'Estelle';
+  document.getElementById('cp-error').textContent='';
+  cpUpdateDots();
+  setProfileTheme(profile);// preview theme on PIN screen
+  showScreen('screen-child-pin');
+}
+
+function cpPress(key){
+  const err=document.getElementById('cp-error');
+  err.textContent='';
+  if(key==='clear'){_cpEntry='';cpUpdateDots();return;}
+  if(key==='back'){_cpEntry=_cpEntry.slice(0,-1);cpUpdateDots();return;}
+  if(_cpEntry.length>=4)return;
+  _cpEntry+=key;
+  cpUpdateDots();
+  if(_cpEntry.length===4){
+    if(_cpEntry===getChildPin(_cpProfile)){
+      cpSuccess();
+    } else {
+      err.textContent='Wrong PIN — try again';
+      // Flash dots red and shake
+      const dotsEl=document.getElementById('cp-dots');
+      for(let i=0;i<4;i++)document.getElementById('cpd-'+i).classList.add('wrong');
+      dotsEl.classList.add('cp-shake');
+      setTimeout(()=>{
+        _cpEntry='';
+        cpUpdateDots();
+        for(let i=0;i<4;i++)document.getElementById('cpd-'+i).classList.remove('wrong');
+        dotsEl.classList.remove('cp-shake');
+      },500);
+    }
+  }
+}
+
+function cpUpdateDots(){
+  for(let i=0;i<4;i++){
+    document.getElementById('cpd-'+i).classList.toggle('filled',i<_cpEntry.length);
+  }
+}
+
+function cpSuccess(){
+  _profile=_cpProfile;
+  // Remember this child on this device
+  saveData('eg_device_child',_profile);
+  // Check for parent notification
+  const notif=readData('eg_notify_'+_profile,null);
+  if(notif){showNotif('🎉','Session reviewed!',notif);saveData('eg_notify_'+_profile,null);}
+  else goToTopics();
+}
+
+function setProfileTheme(profile){
+  if(profile==='estelle'){
+    document.body.classList.add('estelle-theme');
+  } else {
+    document.body.classList.remove('estelle-theme');
+  }
+}
+
+// ===== DEVICE MEMORY =====
+function handleTopicsBack(){
+  const deviceChild=readData('eg_device_child',null);
+  if(deviceChild){
+    showModal('Switch user?','This device is set to '+(deviceChild==='alexander'?'Alexander':'Estelle')+'. Go back to choose someone else?',()=>{
+      saveData('eg_device_child',null);
+      document.body.classList.remove('estelle-theme');// reset to navy before profile screen
+      showScreen('screen-profile');
+      refreshProfileTags();
+    });
+  } else {
+    document.body.classList.remove('estelle-theme');// reset theme
+    showScreen('screen-profile');
+    refreshProfileTags();
+  }
+}
+
+// ===== PARENT: CHANGE CHILD PIN =====
+function changeChildPin(profile){
+  const name=profile==='alexander'?'Alexander':'Estelle';
+  const current=getChildPin(profile);
+  // Show a styled PIN change panel instead of window.prompt
+  const modal=document.getElementById('modal-box');
+  document.getElementById('modal-title').textContent=`${name}'s PIN`;
+  document.getElementById('modal-sub').textContent=`Current PIN: ${current}`;
+  // Replace footer with custom PIN input
+  const footer=modal.querySelector('.modal-btns')||modal.lastElementChild;
+  const inputHtml=`<div id="pin-change-area" style="margin-top:12px">
+    <input id="pin-change-input" type="tel" maxlength="4" pattern="[0-9]*" inputmode="numeric"
+      placeholder="New 4-digit PIN"
+      style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:16px;font-family:'Nunito',sans-serif;font-weight:700;letter-spacing:.2em;text-align:center;outline:none;color:var(--text);background:var(--white)">
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button onclick="closeModal()" style="flex:1;background:none;border:1.5px solid var(--border);border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;color:var(--muted)">Cancel</button>
+      <button onclick="confirmChildPin('${profile}')" style="flex:1;background:var(--navy);color:var(--gold);border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">Save PIN</button>
+    </div>
+  </div>`;
+  // Hide default confirm button, inject custom input
+  const confirmBtn=document.getElementById('modal-confirm-btn');
+  const cancelBtn=modal.querySelector('.modal-cancel-btn');
+  if(confirmBtn)confirmBtn.style.display='none';
+  if(cancelBtn)cancelBtn.style.display='none';
+  const existingArea=document.getElementById('pin-change-area');
+  if(existingArea)existingArea.remove();
+  modal.insertAdjacentHTML('beforeend',inputHtml);
+  document.getElementById('modal-bg').classList.add('show');
+  setTimeout(()=>document.getElementById('pin-change-input')?.focus(),100);
+}
+
+function confirmChildPin(profile){
+  const val=document.getElementById('pin-change-input')?.value?.trim();
+  if(!val||!/^\d{4}$/.test(val)){
+    showToast('PIN must be exactly 4 digits');return;
+  }
+  saveData('eg_child_pin_'+profile,val);
+  closeModal();
+  const name=profile==='alexander'?'Alexander':'Estelle';
+  showToast(`✅ ${name}'s PIN updated to ${val}`);
+}
 window.addEventListener('load',async()=>{
   _key=readCred('eg_apikey')||'';
   const supaUrl=readCred('eg_supa_url');
   const supaKey=readCred('eg_supa_key');
-  if(supaUrl&&supaKey){
-    await pullFromCloud(true);
-  }
-  if(_key){
-    showScreen('screen-profile');
-    refreshProfileTags();
-  } else {
+  if(supaUrl&&supaKey){await pullFromCloud(true);}
+  if(!_key){
     showScreen('screen-api');
-    // Hint if cloud creds exist but API key missing
-    if(supaUrl&&supaKey){
-      setTimeout(()=>showToast('Tap "Restore from cloud" to recover your data'),800);
-    }
+    if(supaUrl&&supaKey)setTimeout(()=>showToast('Tap "Restore from cloud" to recover your data'),800);
+    return;
+  }
+  refreshProfileTags();
+  // Check device memory — skip profile screen, go straight to child's topics
+  const deviceChild=readData('eg_device_child',null);
+  if(deviceChild&&TOPICS[deviceChild]){
+    _profile=deviceChild;
+    setProfileTheme(deviceChild);
+    goToTopics();
+  } else {
+    showScreen('screen-profile');
   }
 });
 
@@ -1072,38 +1263,60 @@ const ICONS={
 };
 
 function openIconPicker(profile){
+  closeIconPicker();
   const panel=document.getElementById('icon-picker-panel');
-  const icons=ICONS[profile];
-  let html=`<h4>Choose icon for ${profile==='alexander'?'Alexander':'Estelle'}</h4>`;
-  for(const [group,list] of Object.entries(icons)){
-    html+=`<div class="icon-row"><div class="icon-row-label">${group}</div><div class="icon-grid">`;
-    list.forEach(ic=>{
-      const current=readCred('eg_icon_'+profile)||'';
-      html+=`<div class="icon-opt${ic===current?' selected':''}" onclick="setIcon('${profile}','${ic}')">${ic}</div>`;
-    });
-    html+='</div></div>';
+  // Add backdrop for tap-outside-to-close
+  let backdrop=document.getElementById('icon-picker-backdrop');
+  if(!backdrop){
+    backdrop=document.createElement('div');
+    backdrop.id='icon-picker-backdrop';
+    backdrop.style.cssText='position:fixed;inset:0;z-index:499;background:rgba(0,0,0,.35)';
+    backdrop.addEventListener('click',closeIconPicker);
+    document.body.appendChild(backdrop);
   }
-  panel.innerHTML=html;
-  panel.classList.toggle('show',panel.style.display==='none'||!panel.classList.contains('show'));
+  backdrop.style.display='block';
+  const allIcons=['🦊','🦁','🐻','🐼','🐨','🐯','🦋','🐬','🦄','🐸','🐙','🦅','🦉','🐺','🦝','🐧','🦕','🐉','🦈','🐆'];
+  const current=readCred('eg_icon_'+profile)||'🦊';
+  const name=profile==='alexander'?'Alexander':'Estelle';
+  panel.innerHTML=`<div style="background:var(--white);border-radius:18px 18px 0 0;padding:16px 16px 24px;border-top:2px solid var(--border);box-shadow:0 -4px 20px rgba(0,0,0,.15)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:800;color:var(--text)">Choose ${name}'s icon</div>
+      <button onclick="closeIconPicker()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted);padding:4px;line-height:1">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px">
+      ${allIcons.map(ic=>`<button onclick="setIcon('${profile}','${ic}')" style="background:${ic===current?'var(--bg)':'none'};border:${ic===current?'2px solid var(--navy)':'2px solid transparent'};font-size:30px;cursor:pointer;padding:8px 0;border-radius:12px;line-height:1;-webkit-tap-highlight-color:transparent">${ic}</button>`).join('')}
+    </div>
+  </div>`;
+  panel.style.display='block';
+}
+
+function closeIconPicker(){
+  const p=document.getElementById('icon-picker-panel');
+  if(p)p.style.display='none';
+  const bd=document.getElementById('icon-picker-backdrop');
+  if(bd)bd.style.display='none';
 }
 
 function setIcon(profile,icon){
   saveCred('eg_icon_'+profile,icon);
-  document.getElementById(profile==='alexander'?'alex-avatar':'est-avatar').textContent=icon;
-  document.getElementById('icon-picker-panel').classList.remove('show');
+  const alexEl=document.getElementById('alex-avatar');
+  const estEl=document.getElementById('est-avatar');
+  if(profile==='alexander'&&alexEl)alexEl.textContent=icon;
+  if(profile==='estelle'&&estEl)estEl.textContent=icon;
+  const av=document.getElementById('topics-avatar');
+  if(av&&_profile===profile)av.textContent=icon;
+  const cpAv=document.getElementById('cp-avatar');
+  if(cpAv&&_cpProfile===profile)cpAv.textContent=icon;
+  refreshProfileTags();
+  closeIconPicker();
   showToast('Icon updated!');
 }
 
-function selectProfile(profile){
-  _profile=profile;
-  const notif=readData('eg_notify_'+profile,null);
-  if(notif){showNotif('🎉','Session reviewed!',notif);saveData('eg_notify_'+profile,null);}
-  else goToTopics();
-}
-
+// selectProfile is now defined above in CHILD PIN SYSTEM — this is kept for backwards compat
 // ===== TOPICS SCREEN =====
 function goToTopics(){
   S.phase=0;
+  setProfileTheme(_profile);// ensure correct theme always applied
   showScreen('screen-topics');
   switchTopicsTab(0);
   document.getElementById('topics-profile-name').textContent=_profile==='alexander'?'Alexander':'Estelle';
@@ -2256,6 +2469,8 @@ function buildChildHTML(profile){
       <div class="action-btn-card" onclick="unlockNextTopic('${profile}')"><div class="action-icon">🔓</div><div class="action-lbl">Unlock topic</div></div>
       <div class="action-btn-card" onclick="resetTopicSession('${profile}')"><div class="action-icon">↩</div><div class="action-lbl">Reset session</div></div>
       <div class="action-btn-card" onclick="fixProgress('${profile}')"><div class="action-icon">🔧</div><div class="action-lbl">Fix progress</div></div>
+      <div class="action-btn-card" onclick="changeChildPin('${profile}')"><div class="action-icon">🔢</div><div class="action-lbl">Change PIN</div></div>
+      <div class="action-btn-card" onclick="saveData('eg_device_child',null);showToast('Device memory cleared')"><div class="action-icon">📱</div><div class="action-lbl">Reset device</div></div>
     </div></div>`;
 
     // Topic list (clean)
@@ -2933,9 +3148,13 @@ function showModal(title,sub,fn){
 function closeModal(){
   document.getElementById('modal-bg').classList.remove('show');
   _modalFn=null;
-  // Restore confirm button in case it was hidden
+  // Restore buttons and clean up any custom PIN input
   const btn=document.getElementById('modal-confirm-btn');
   if(btn)btn.style.display='';
+  const cancelBtn=document.querySelector('.modal-cancel-btn');
+  if(cancelBtn)cancelBtn.style.display='';
+  const pinArea=document.getElementById('pin-change-area');
+  if(pinArea)pinArea.remove();
 }
 document.getElementById('modal-confirm-btn').onclick=()=>{const fn=_modalFn;closeModal();if(fn)fn();};
 
