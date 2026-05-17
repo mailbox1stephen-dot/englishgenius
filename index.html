@@ -60,7 +60,7 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
 .p-name{font-size:17px;font-weight:800;color:var(--text)}
 .p-grade{font-size:12px;color:var(--muted);margin-top:2px}
 .p-streak{font-size:11px;color:var(--amber);font-weight:700;margin-top:6px}
-.change-icon-btn{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:4px;text-decoration:underline}
+.change-icon-btn{display:none}
 .icon-picker{background:var(--white);border-radius:12px;padding:14px;margin-top:10px;border:1.5px solid var(--border);display:none;width:100%;max-width:420px}
 .icon-picker.show{display:block}
 .icon-picker h4{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
@@ -72,9 +72,11 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
 .p-topic-tag{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;display:inline-block;margin-top:8px}
 .alex .p-topic-tag{background:#DBEAFE;color:#1D4ED8}
 .est .p-topic-tag{background:#EDE9FE;color:#5B21B6}
-.p-avatar-wrap{width:60px;height:60px;border-radius:16px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:36px}
+.p-avatar-wrap{width:68px;height:68px;border-radius:18px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;cursor:pointer}
 .alex .p-avatar-wrap{background:#EFF6FF}
 .est .p-avatar-wrap{background:#F5F3FF}
+.p-avatar-edit{position:absolute;bottom:-4px;right:-4px;width:22px;height:22px;border-radius:50%;background:#fff;border:1.5px solid #e5e7eb;display:flex;align-items:center;justify-content:center;font-size:10px;box-shadow:0 1px 3px rgba(0,0,0,.12);transition:all .15s}
+.p-avatar-wrap:hover .p-avatar-edit{background:#f0f0f0;border-color:#ccc}
 .parent-btn{width:100%;max-width:420px;background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;color:var(--muted);font-family:'Nunito',sans-serif}
 
 /* ===== TOPICS ===== */
@@ -222,6 +224,7 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
 .complete-title{font-size:28px;font-weight:900;color:var(--navy);margin-bottom:8px}
 .complete-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6}
 .streak-badge{background:var(--gold);color:var(--navy);border-radius:24px;padding:12px 24px;font-size:17px;font-weight:900;display:inline-block;margin-bottom:24px}
+.streak-badge.waiting{background:#f0f0f0;color:var(--muted);font-size:14px}
 .home-btn{background:var(--navy);color:var(--gold);border:none;border-radius:14px;padding:15px 36px;font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif}
 
 /* ===== PARENT PIN ===== */
@@ -491,24 +494,24 @@ html,body{height:100%;overflow:hidden;max-width:768px;margin:0 auto;font-family:
   </div>
   <div class="profile-cards">
     <div class="profile-card alex" onclick="selectProfile('alexander')">
-      <div class="p-avatar-wrap">
-        <div class="p-avatar" id="alex-avatar" onclick="event.stopPropagation();openIconPicker('alexander')">🦊</div>
+      <div class="p-avatar-wrap" onclick="event.stopPropagation();openIconPicker('alexander')">
+        <div class="p-avatar" id="alex-avatar">🦊</div>
+        <div class="p-avatar-edit">✏️</div>
       </div>
       <div class="p-name">Alexander</div>
       <div class="p-grade">Age 9 · Year 3</div>
       <div class="p-streak" id="alex-streak">🔥 0 day streak</div>
       <div class="p-topic-tag" id="alex-topic">Science & Experiments</div>
-      <button class="change-icon-btn" onclick="event.stopPropagation();openIconPicker('alexander')">✏️ Change icon</button>
     </div>
     <div class="profile-card est" onclick="selectProfile('estelle')">
-      <div class="p-avatar-wrap">
-        <div class="p-avatar" id="est-avatar" onclick="event.stopPropagation();openIconPicker('estelle')">🦋</div>
+      <div class="p-avatar-wrap" onclick="event.stopPropagation();openIconPicker('estelle')">
+        <div class="p-avatar" id="est-avatar">🦋</div>
+        <div class="p-avatar-edit">✏️</div>
       </div>
       <div class="p-name">Estelle</div>
       <div class="p-grade">Age 11 · Year 6</div>
       <div class="p-streak" id="est-streak">🔥 0 day streak</div>
       <div class="p-topic-tag" id="est-topic">Science & Discovery</div>
-      <button class="change-icon-btn" onclick="event.stopPropagation();openIconPicker('estelle')">✏️ Change icon</button>
     </div>
   </div>
   <div id="icon-picker-panel" class="icon-picker" style="max-width:420px;width:100%"></div>
@@ -878,8 +881,8 @@ async function pushToCloud(silent=false){
     'eg_icon_alexander','eg_icon_estelle',
     'eg_apikey','eg_parent_pin'
   ];
-  // Also push any cached session data
-  const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('eg_sess_'));
+  // Also push cached session data and in-progress answers
+  const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('eg_sess_')||k.startsWith('eg_progress_'));
   keys.push(...allKeys);
   let count=0;
   for(const k of keys){
@@ -910,8 +913,8 @@ async function pullFromCloud(silent=false){
   rows.forEach(row=>{
     try{
       const cloudVal=typeof row.value==='string'?row.value:JSON.stringify(row.value);
-      // Session cache — just save locally, always accept cloud version
-      if(row.key.startsWith('eg_sess_')){
+      // Session cache and in-progress answers — always accept cloud version
+      if(row.key.startsWith('eg_sess_')||row.key.startsWith('eg_progress_')){
         localStorage.setItem(row.key,cloudVal);
         return;
       }
@@ -1333,6 +1336,7 @@ async function generateAndRunSession(){
       if(inProgress&&inProgress.phase>0){
         S.answers=inProgress.answers||[];
         S.annotationImg=inProgress.annotationImg||null;
+        S.writeImg=inProgress.writeImg||null;
         S.timer=inProgress.timer||0;
         startTimer();
         if(inProgress.phase===3){renderPhase3();}
@@ -1349,7 +1353,8 @@ async function generateAndRunSession(){
   // Not cached — generate via API
   document.getElementById('sess-body').innerHTML=`<div class="gen-box">
     <div class="gen-spinner"></div>
-    <div class="gen-text">Creating your ${SESSION_LABELS[S.sessionType]||'Test'} session...</div>
+    <div class="gen-text">✨ Creating your ${SESSION_LABELS[S.sessionType]||'Test'} session...</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:6px">This only happens once — it saves for next time</div>
   </div>`;
 
   try{
@@ -1447,13 +1452,23 @@ Return exactly this JSON:
   }
 }`;
 
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':_key,
-      'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2500,
-      messages:[{role:'user',content:prompt}]})
-  });
+  const controller=new AbortController();
+  const timeoutId=setTimeout(()=>controller.abort(),30000);
+  let resp;
+  try{
+    resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',signal:controller.signal,
+      headers:{'Content-Type':'application/json','x-api-key':_key,
+        'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2500,
+        messages:[{role:'user',content:prompt}]})
+    });
+  }catch(e){
+    clearTimeout(timeoutId);
+    if(e.name==='AbortError')throw new Error('Request timed out — check your connection and try again');
+    throw e;
+  }
+  clearTimeout(timeoutId);
   const d=await resp.json();
   // Surface real API errors (wrong key, rate limit, etc.)
   if(d.error){
@@ -1555,6 +1570,11 @@ function renderPhase1(){
     </div>
     <button class="done-reading-btn" onclick="goToPhase2()">Done reading — start questions →</button>`;
   initAnnotationCanvas();
+  // Restore annotation if resuming
+  if(S.annotationImg){
+    const ac=document.getElementById('annotation-canvas');
+    if(ac){const img=new Image();img.onload=()=>ac.getContext('2d').drawImage(img,0,0,ac.width,ac.height);img.src=S.annotationImg;}
+  }
   if(S.sessionData.imageTopics){loadPassageImages(S.sessionData.imageTopics);}
 }
 
@@ -1647,7 +1667,7 @@ function goToPhase2(){
 // PHASE 2: QUESTIONS
 let _peekOpen=false;
 function renderPhase2(){
-  S.phase=2;S.currentQ=0;
+  S.phase=2;S.currentQ=0;_peekOpen=false;
   updatePhaseBar(2);
   renderProgStrip(0,9);
   document.getElementById('send-bar').style.display='none';
@@ -1671,7 +1691,7 @@ function renderQuestion(qi){
       ${S.sessionData.passage}
     </div>
     <div>
-      <div class="q-lbl">${q.type.toUpperCase()} · Q${qi+1} of 9</div>
+      <div class="q-lbl">${q.type.toUpperCase()} · Q${qi+1} of 10</div>
       <div class="q-text">${q.q}</div>
     </div>
     <div class="answer-wrap">
@@ -1764,7 +1784,7 @@ function clearAnswerCanvas(){
   const w=canvas.width/dpr,h=canvas.height/dpr;
   const ctx=canvas.getContext('2d');
   _ansUndoStack.push(ctx.getImageData(0,0,canvas.width,canvas.height));
-  ctx.setTransform(dpr,0,0,dpr,0,0);// reset without double-scaling
+  ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.clearRect(0,0,w,h);
   ctx.strokeStyle='#f0f0f0';ctx.lineWidth=1;
   for(let y=30;y<h;y+=30){ctx.beginPath();ctx.moveTo(10,y);ctx.lineTo(w-10,y);ctx.stroke();}
@@ -1777,6 +1797,7 @@ function saveSessionProgress(){
     phase:S.phase,currentQ:S.currentQ,
     answers:S.answers.map(a=>a?{isEmpty:a.isEmpty,img:a.img}:null),
     annotationImg:S.annotationImg,
+    writeImg:S.writeImg||null,
     timer:S.timer
   }));}catch(e){}
 }
@@ -1829,6 +1850,15 @@ function renderPhase3(){
   document.getElementById('send-bar').style.display='flex';
   updateSendMeta();
   initWriteCanvas();
+  // Restore write canvas if resuming
+  if(S.writeImg){
+    const wc=document.getElementById('write-canvas');
+    if(wc){
+      const dpr=window.devicePixelRatio||1;
+      const w=wc.width/dpr,h=wc.height/dpr;
+      const img=new Image();img.onload=()=>wc.getContext('2d').drawImage(img,0,0,w,h);img.src=S.writeImg;
+    }
+  }
 }
 
 function initWriteCanvas(){
@@ -1890,7 +1920,12 @@ function clearWriteCanvas(){
 function startTimer(){S.timer=0;clearInterval(S.timerInterval);S.timerInterval=setInterval(()=>{if(!S.paused){S.timer++;updateSendMeta();}},1000);}
 function stopTimer(){clearInterval(S.timerInterval);}
 function fmtTime(s){const m=Math.floor(s/60),sec=s%60;return`${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;}
-function updateSendMeta(){const q=S.answers.filter(a=>a&&!a.isEmpty).length;document.getElementById('send-meta').textContent=`Answered ${q} · ${fmtTime(S.timer)}`;}
+function updateSendMeta(){
+  const q=S.answers.filter(a=>a&&!a.isEmpty).length;
+  const inWrite=S.phase===3;
+  const label=inWrite?`Q1–9 answered · Writing Q10 · ${fmtTime(S.timer)}`:`Answered ${q}/9 · ${fmtTime(S.timer)}`;
+  document.getElementById('send-meta').textContent=label;
+}
 
 function exitSession(){
   showModal(
@@ -1926,6 +1961,7 @@ async function doSendSession(){
   // Save write canvas
   const wc=document.getElementById('write-canvas');
   const writeImg=wc?wc.toDataURL('image/jpeg',0.3):null;
+  S.writeImg=writeImg;// store for potential resume
   // Save any unsaved answer
   saveCurrentAnswer();
 
@@ -1955,9 +1991,10 @@ async function doSendSession(){
   clearSessionProgress(_profile,S.topicId,S.sessionType);// clean up
   // Show complete screen
   showScreen('screen-complete');
-  const _sentStreak=readData('eg_streak_'+_profile,0)||0;
   document.getElementById('complete-sub').textContent=`Dad will review your ${SESSION_LABELS[S.sessionType]||'Test'} session.`;
-  document.getElementById('complete-streak').textContent=`🔥 ${_sentStreak} day streak`;
+  const sb=document.getElementById('complete-streak');
+  sb.textContent='⏳ Waiting for Dad to approve';
+  sb.className='streak-badge waiting';
 }
 
 // ===== AI CHECKING =====
@@ -2068,7 +2105,10 @@ function buildOverviewHTML(){
               <div class="pc-name">${icon} ${p.pname} — ${topic?.theme||'Session'}</div>
               <div class="pc-badge">${SESSION_ICONS[p.sessionType]||'📋'} ${SESSION_LABELS[p.sessionType]||'Test'}</div>
             </div>
-            <div class="pc-meta">${dateStr} · ${timeStr}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">
+              <div class="pc-meta">${dateStr} · ${timeStr}</div>
+              <button onclick="event.stopPropagation();deletePendingSession('${p.profile}','${p.id}')" style="background:none;border:none;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;padding:2px 6px;border-radius:6px;font-family:'Nunito',sans-serif" title="Delete session">🗑</button>
+            </div>
           </div>`;
         }catch(err){}
       });
@@ -2268,6 +2308,24 @@ function buildChildHTML(profile){
     console.error('buildChildHTML:',e);
     return '<div style="padding:14px;color:var(--muted)">⚠️ Error loading.</div>';
   }
+}
+
+function deletePendingSession(profile,sessionId){
+  showModal(
+    'Delete this session?',
+    'The child\'s work will be deleted. This cannot be undone.',
+    ()=>{
+      const pending=readData('eg_pending_'+profile,[])||[];
+      const sess=pending.find(p=>p.id==sessionId);
+      const newPending=pending.filter(p=>p.id!=sessionId);
+      saveData('eg_pending_'+profile,newPending);
+      // Also clear the session cache so it regenerates fresh next time
+      if(sess)clearSessionCache(profile,sess.topicId,sess.sessionType);
+      if(isCloudEnabled())pushToCloud(true);
+      showToast('Session deleted');
+      showParentDash();
+    }
+  );
 }
 
 function removeLockedSession(profile){
@@ -2577,6 +2635,20 @@ function updateWriteMarkUI(correct){
 
 function approveSession(){
   if(!_reviewSession)return;
+  // Guard: warn if Q10 write not marked
+  if(!_reviewSession.writeResult){
+    showModal(
+      'Rate the writing first',
+      'Please tap ✓ Accept or ✗ Redo on the writing task (Q10) before approving.',
+      null
+    );
+    // Hide confirm button — this is just a warning
+    setTimeout(()=>{
+      const btn=document.getElementById('modal-confirm-btn');
+      if(btn)btn.style.display='none';
+    },50);
+    return;
+  }
   const sess=_reviewSession;
   const profile=sess.profile;
 
@@ -2626,8 +2698,9 @@ function approveSession(){
     const corrections=wrongs.map(q=>({...q,tid:sess.topicId,sessionType:sess.sessionType}));
     saveData('eg_corrections_'+profile,corrections.slice(0,5));
     if(passed){
-      saveData('eg_notify_'+profile,`${scored}/${total} correct on ${SESSION_LABELS[sess.sessionType]}! ${allDone?'⭐ Topic test unlocked!':'Keep going!'}`);
-    }else{
+    const streak=readData('eg_streak_'+profile,0)||0;
+    saveData('eg_notify_'+profile,`${scored}/${total} correct on ${SESSION_LABELS[sess.sessionType]}! 🔥 ${streak} day streak! ${allDone?'⭐ Topic test unlocked!':'Keep going!'}`);
+  }else{
       saveData('eg_notify_'+profile,`${scored}/${total} on ${SESSION_LABELS[sess.sessionType]}. You can try this one again — check your mistakes!`);
       tp.sessions[sess.sessionType]=false;// allow retry
     }
@@ -2658,16 +2731,31 @@ function approveSession(){
 // ===== SESSION BUILDER =====
 function initSB(){
   const profile=_sbData.profile;
-  // Set the child select to match
   const childSel=document.getElementById('sb-child-select');
   if(childSel)childSel.value=profile;
-  // Populate topic dropdown
   const sel=document.getElementById('sb-topic-select');
   sel.innerHTML=TOPICS[profile].map(t=>`<option value="${t.id}">${t.icon} ${t.month} — ${t.theme}</option>`).join('');
   _sbData.topicId=TOPICS[profile][0].id;
   renderSBTypeBtns();
   _sbData.generated=null;
-  document.getElementById('sb-preview-area').innerHTML='<div class="sb-loading">Select a session type then press Regenerate to preview</div>';
+  document.getElementById('sb-preview-area').innerHTML=`<div class="sb-loading"><div class="gen-spinner" style="margin:0 auto 10px"></div>Loading session...</div>`;
+  // Auto-load from cache or generate
+  sbAutoLoad();
+}
+
+async function sbAutoLoad(){
+  const data=await loadSessionCache(_sbData.profile,_sbData.topicId,_sbData.sessionType);
+  if(data&&data.passage&&data.questions){
+    _sbData.generated=data;
+    renderSBPreview(data);
+    sbLoadImages(data.imageTopics||[]);
+    // Show "cached" note at top
+    const cacheNote=document.getElementById('sb-cache-note');
+    if(cacheNote)cacheNote.style.display='block';
+  } else {
+    // No cache — auto-generate
+    await sbRegenerate();
+  }
 }
 
 function renderSBTypeBtns(){
@@ -2678,7 +2766,8 @@ function renderSBTypeBtns(){
 function sbSetType(st){
   _sbData.sessionType=st;_sbData.generated=null;
   renderSBTypeBtns();
-  document.getElementById('sb-preview-area').innerHTML='<div class="sb-loading">Press Regenerate to generate this session</div>';
+  document.getElementById('sb-preview-area').innerHTML=`<div class="sb-loading"><div class="gen-spinner" style="margin:0 auto 10px"></div>Loading session...</div>`;
+  sbAutoLoad();
 }
 
 function sbUpdate(){
@@ -2694,7 +2783,8 @@ function sbUpdate(){
   _sbData.generated=null;
   // Reset type buttons and preview on any change
   renderSBTypeBtns();
-  document.getElementById('sb-preview-area').innerHTML='<div class="sb-loading">Press Regenerate to generate this session</div>';
+  document.getElementById('sb-preview-area').innerHTML=`<div class="sb-loading"><div class="gen-spinner" style="margin:0 auto 10px"></div>Loading session...</div>`;
+  sbAutoLoad();
 }
 
 async function sbRegenerate(){
@@ -2731,6 +2821,7 @@ async function sbLoadImages(imageTopics){
 
 function renderSBPreview(data){
   let html=`<div class="sb-preview-card">
+    <div id="sb-cache-note" style="display:none;font-size:10px;font-weight:600;color:var(--muted);padding:6px 10px;background:#f9f9f9;border-radius:8px;margin-bottom:10px;border:1px solid var(--border)">📋 Cached session — press Regenerate for a fresh one</div>
     <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">🖼 Images (parent preview)</div>
     <div id="sb-img-row" style="display:none;gap:8px;margin-bottom:12px;flex-wrap:wrap"></div>
     <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px">📖 Reading passage</div>
@@ -2836,7 +2927,13 @@ function showModal(title,sub,fn){
   document.getElementById('modal-sub').textContent=sub;
   document.getElementById('modal-bg').classList.add('show');
 }
-function closeModal(){document.getElementById('modal-bg').classList.remove('show');_modalFn=null;}
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('show');
+  _modalFn=null;
+  // Restore confirm button in case it was hidden
+  const btn=document.getElementById('modal-confirm-btn');
+  if(btn)btn.style.display='';
+}
 document.getElementById('modal-confirm-btn').onclick=()=>{const fn=_modalFn;closeModal();if(fn)fn();};
 
 // ===== NOTIFICATION =====
