@@ -899,17 +899,28 @@ async function pullFromCloud(silent=false){
     if(!silent)showToast('Pull failed — check connection');
     return;
   }
+  // Keys that should never be overwritten by cloud — device-specific credentials
+  const protectedKeys=['eg_supa_url','eg_supa_key'];
+  // API key: only pull if none saved locally
+  const localApiKey=readCred('eg_apikey');
   let kept=0;
   rows.forEach(row=>{
     try{
       const cloudVal=typeof row.value==='string'?row.value:JSON.stringify(row.value);
-      // Never overwrite pending sessions if local has more recent/more items
+      // Never overwrite Supabase credentials
+      if(protectedKeys.includes(row.key))return;
+      // Only pull API key if none saved locally
+      if(row.key==='eg_apikey'){
+        if(!localApiKey)saveCred('eg_apikey',cloudVal);
+        return;
+      }
+      // Never overwrite pending sessions if local has more
       if(row.key.startsWith('eg_pending_')){
         const local=JSON.parse(localStorage.getItem(row.key)||'[]');
         const cloud=JSON.parse(cloudVal||'[]');
         if(local.length>cloud.length){kept++;return;}
       }
-      // Smart merge for progress — never downgrade sessions done
+      // Smart merge for progress
       if(row.key.startsWith('eg_prog_')){
         const local=JSON.parse(localStorage.getItem(row.key)||'null');
         const cloud=JSON.parse(cloudVal||'null');
@@ -1369,7 +1380,7 @@ Return exactly this JSON:
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':_key,
       'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:2500,
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2500,
       messages:[{role:'user',content:prompt}]})
   });
   const d=await resp.json();
@@ -1884,7 +1895,7 @@ Keep comment brief and helpful for parent review. For vocab/factual: no comment 
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':_key,
         'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:100,
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:100,
         messages:[{role:'user',content:prompt}]})
     });
     const d=await r.json();
@@ -2409,7 +2420,7 @@ Keep comment under 12 words.`;
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':_key,
       'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:60,
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:60,
       messages:[{role:'user',content:prompt}]})
   });
   const d=await r.json();
